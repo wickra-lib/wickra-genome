@@ -21,6 +21,7 @@ authors = ["wickra-lib"]
 [workspace.dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
+toml = "0.8"
 rust_decimal = "1"
 thiserror = "2"
 rayon = "1"
@@ -29,6 +30,10 @@ clap = { version = "4", features = ["derive"] }
 # the Candle type / CSV reader.
 wickra-core = "0.9"
 wickra-data = "0.9"
+# The name -> indicator resolver (the only such factory in the ecosystem); it
+# pulls in wickra-core transitively and provides the serde `Candle`. Git pin so
+# cargo-deny's wildcard ban does not fire.
+wickra-backtest-core = { git = "https://github.com/wickra-lib/wickra-backtest", version = "0.1" }
 # A live market feed for the cross-section query; used behind the `live` feature.
 # Git dependency (not yet on crates.io) carries a version pin so cargo-deny's
 # wildcard ban does not fire.
@@ -43,6 +48,16 @@ unsafe_code = "forbid"
 [workspace.lints.clippy]
 all = { level = "warn", priority = -1 }
 pedantic = { level = "warn", priority = -1 }
+# Allowed pedantic lints (same precedent as the wickra core).
+cast_precision_loss = "allow"
+cast_sign_loss = "allow"
+cast_possible_truncation = "allow"
+module_name_repetitions = "allow"
+missing_errors_doc = "allow"
+missing_panics_doc = "allow"
+must_use_candidate = "allow"
+too_many_lines = "allow"
+similar_names = "allow"
 
 [profile.release]
 lto = true

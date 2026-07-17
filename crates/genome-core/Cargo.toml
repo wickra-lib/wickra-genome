@@ -11,9 +11,11 @@ description = "Market-genome vector engine: every asset as a 514-dim live vector
 [dependencies]
 serde = { workspace = true }
 serde_json = { workspace = true }
+toml = { workspace = true }
 thiserror = { workspace = true }
 wickra-core = { workspace = true }
 wickra-data = { workspace = true }
+wickra-backtest-core = { workspace = true }
 rayon = { workspace = true, optional = true }
 wickra-exchange = { workspace = true, optional = true }
 
@@ -21,6 +23,9 @@ wickra-exchange = { workspace = true, optional = true }
 default = ["parallel"]
 parallel = ["dep:rayon"]
 live = ["dep:wickra-exchange"]
+
+[dev-dependencies]
+proptest = { workspace = true }
 
 [lints]
 workspace = true

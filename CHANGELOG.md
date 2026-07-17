@@ -15,5 +15,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   and the `wickra-core` / `wickra-data` dependencies (the streaming indicators
   that build every asset's vector) plus the `wickra-exchange` git dependency (a
   live market feed, behind the `live` feature).
+- `genome-core`: the market-genome vector engine. A data-driven `GenomeSpec`
+  (feature axes, cross-section normalization, distance metric) turns each symbol
+  into a live feature vector over the `wickra-core` streaming indicators, resolved
+  by name through the `wickra-backtest-core` registry factory. Four queries run
+  over that vector space — `vector`, `similar` (k nearest neighbors), `cluster`
+  (deterministic seeded k-means++ / Lloyd) and `anomaly` (nearest-neighbor
+  outlier scores) — behind the single `command_json` FFI boundary (`Genome`).
+  Determinism is enforced end to end (`BTreeMap` ordering, serial key-order
+  reductions, a portable `SplitMix64` PRNG, and fixed `1e-8` output rounding) so
+  the batch and streaming paths and every language binding agree byte-for-byte.
 
 [Unreleased]: https://github.com/wickra-lib/wickra-genome/commits/main
