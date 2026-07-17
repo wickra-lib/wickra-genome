@@ -1,0 +1,17 @@
+[package]
+name = "wickra-genome-example"
+description = "A runnable Rust example for the Wickra Genome vector engine."
+version = "0.1.0"
+edition = "2021"
+publish = false
+
+# Detached from the parent workspace so the example builds on its own.
+[workspace]
+
+[[bin]]
+name = "genome"
+path = "src/main.rs"
+
+[dependencies]
+genome-core = { path = "../../crates/genome-core", default-features = false }
+serde_json = "1"
