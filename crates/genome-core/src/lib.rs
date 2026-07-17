@@ -47,6 +47,11 @@ pub use genome::{build, Genome};
 pub use spec::{default_seed, GenomeSpec, Metric, Normalize};
 pub use types::{Anomaly, Cluster, Neighbor, Vector};
 
+/// The OHLCV candle type consumed by the engine (re-exported from
+/// `wickra-backtest-core`), so consumers build a universe without a direct
+/// dependency on the engine crate.
+pub use wickra_backtest_core::Candle;
+
 /// The crate version (`CARGO_PKG_VERSION`).
 #[must_use]
 pub fn version() -> &'static str {
