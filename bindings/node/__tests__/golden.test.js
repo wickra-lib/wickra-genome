@@ -1,11 +1,11 @@
 "use strict";
 
-// Determinism: the same commands yield the byte-identical response string. The
-// full cross-language golden (asserting the response equals a blessed
-// golden/expected file) lands with the golden corpus in P-GEN-4; here we pin the
-// core invariant that the results are byte-reproducible, which every binding
-// must preserve by forwarding the command string verbatim. When the golden
-// corpus is present, every fixture is checked against the shared expected files.
+// Determinism plus the cross-language golden. The first tests pin that the same
+// commands yield a byte-identical response string (every binding must preserve
+// this by forwarding the command string verbatim). When the shared golden corpus
+// is present, the Node binding is verified against every blessed fixture
+// byte-for-byte — this is the cross-language proof that seeded k-means and the
+// whole vector pipeline agree across all ten languages.
 
 const { test } = require("node:test");
 const assert = require("node:assert");
@@ -44,20 +44,73 @@ test("anomaly field order is symbol-first", () => {
   assert.ok(run({ cmd: "anomaly" }).startsWith('{"anomalies":[{"symbol":'));
 });
 
-// The cross-language golden lands in P-GEN-4; when the corpus exists, verify the
-// Node binding reproduces every blessed fixture byte-for-byte.
-if (fs.existsSync(path.join(GOLDEN, "specs"))) {
-  for (const specFile of fs.readdirSync(path.join(GOLDEN, "specs")).sort()) {
-    const name = path.basename(specFile, ".json");
-    test(`cross-language golden: ${name}`, () => {
-      const spec = fs.readFileSync(path.join(GOLDEN, "specs", specFile), "utf8");
-      const cmds = JSON.parse(fs.readFileSync(path.join(GOLDEN, "cmds", `${name}.json`), "utf8"));
-      const expected = fs
-        .readFileSync(path.join(GOLDEN, "expected", `${name}.json`), "utf8")
-        .trimEnd();
-      const g = new Genome(spec);
-      const got = cmds.map((c) => g.command(JSON.stringify(c))).join("\n");
-      assert.strictEqual(got, expected, `golden mismatch for ${name}`);
+// Parse an OHLCV CSV (`ts,open,high,low,close,volume`, header skipped) into the
+// candle-object array the `build` command consumes.
+function parseCsv(text) {
+  const candles = [];
+  text.split(/\r?\n/).forEach((line, idx) => {
+    const row = line.trim();
+    if (row === "") return;
+    const c = row.split(",").map((x) => x.trim());
+    if (!/^-?\d+$/.test(c[0])) {
+      if (idx === 0) return; // header
+      throw new Error(`bad timestamp: ${c[0]}`);
+    }
+    candles.push({
+      time: Number(c[0]),
+      open: Number(c[1]),
+      high: Number(c[2]),
+      low: Number(c[3]),
+      close: Number(c[4]),
+      volume: Number(c[5]),
     });
+  });
+  return candles;
+}
+
+// Load the shared `golden/data/` universe (one `<SYMBOL>.csv` per symbol).
+function loadUniverse() {
+  const dir = path.join(GOLDEN, "data");
+  const data = {};
+  for (const file of fs.readdirSync(dir)) {
+    if (!file.endsWith(".csv")) continue;
+    const sym = path.basename(file, ".csv");
+    data[sym] = parseCsv(fs.readFileSync(path.join(dir, file), "utf8"));
+  }
+  return data;
+}
+
+// The blessed op matrix per spec (mirrors golden/README.md): `cluster5` clusters
+// at k=5, the rest at k=3; `vector`/`similar` query `AAA`.
+function opsFor(name) {
+  const ck = name === "cluster5" ? 5 : 3;
+  return [
+    ["vector", { cmd: "vector", symbol: "AAA" }],
+    ["similar", { cmd: "similar", symbol: "AAA", k: 3 }],
+    ["cluster", { cmd: "cluster", k: ck }],
+    ["anomaly", { cmd: "anomaly" }],
+  ];
+}
+
+// The cross-language golden: every spec, run against the shared universe, must
+// reproduce each op's blessed `golden/expected/<op>/<name>.json` byte-for-byte.
+if (fs.existsSync(path.join(GOLDEN, "specs"))) {
+  const universe = loadUniverse();
+  const buildCmd = JSON.stringify({ cmd: "build", data: universe });
+  for (const specFile of fs.readdirSync(path.join(GOLDEN, "specs")).sort()) {
+    if (!specFile.endsWith(".json")) continue;
+    const name = path.basename(specFile, ".json");
+    const spec = fs.readFileSync(path.join(GOLDEN, "specs", specFile), "utf8");
+    for (const [op, cmd] of opsFor(name)) {
+      test(`cross-language golden: ${op}/${name}`, () => {
+        const g = new Genome(spec);
+        g.command(buildCmd);
+        const got = g.command(JSON.stringify(cmd));
+        const expected = fs
+          .readFileSync(path.join(GOLDEN, "expected", op, `${name}.json`), "utf8")
+          .trimEnd();
+        assert.strictEqual(got, expected, `golden mismatch for ${op}/${name}`);
+      });
+    }
   }
 }
