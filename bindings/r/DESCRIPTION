@@ -1,0 +1,16 @@
+Package: wickragenome
+Type: Package
+Title: A Vector Database of the Market over the Streaming Indicators
+Version: 0.1.0
+Authors@R: person("kingchenc", role = c("aut", "cre"), email = "support@wickra.org")
+Description: R bindings for wickra-genome over its C ABI hub: every asset a live
+    vector over the streaming indicators, with similarity search, clustering and
+    anomaly detection - byte-identical to the CLI and every other binding.
+License: MIT + file LICENSE | Apache License 2.0
+URL: https://github.com/wickra-lib/wickra-genome
+BugReports: https://github.com/wickra-lib/wickra-genome/issues
+Encoding: UTF-8
+NeedsCompilation: yes
+SystemRequirements: the wickra-genome C ABI shared library (WKGENOME_LIB)
+    and its header (WKGENOME_INC).
+RoxygenNote: 7.3.2
