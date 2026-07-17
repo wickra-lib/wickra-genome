@@ -1,16 +1,22 @@
 [package]
-name = "genome-python"
+name = "wickra-genome-python"
+description = "Python bindings for wickra-genome: a vector database of the market — every asset a live vector over the streaming indicators, with similarity, clustering and anomaly detection."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
 authors.workspace = true
-description = "Wickra Genome — python binding (scaffold)."
+readme = "README.md"
 publish = false
 
-[dependencies]
-genome-core = { path = "../../crates/genome-core", version = "0.1" }
+[lib]
+name = "_wickra_genome"
+crate-type = ["cdylib"]
 
 [lints]
 workspace = true
+
+[dependencies]
+genome-core = { path = "../../crates/genome-core", version = "0.1" }
+pyo3 = { version = "0.29", features = ["extension-module", "abi3-py39"] }
