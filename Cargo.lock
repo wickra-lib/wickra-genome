@@ -646,13 +646,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "genome-c"
-version = "0.1.0"
-dependencies = [
- "genome-core",
-]
-
-[[package]]
 name = "genome-cli"
 version = "0.1.0"
 dependencies = [
@@ -2438,6 +2431,13 @@ dependencies = [
  "thiserror",
  "wickra-core",
  "zeroize",
+]
+
+[[package]]
+name = "wickra-genome-c"
+version = "0.1.0"
+dependencies = [
+ "genome-core",
 ]
 
 [[package]]
