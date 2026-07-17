@@ -1,0 +1,14 @@
+{
+  "features": [
+    { "kind": "indicator", "name": "Rsi", "params": [14] },
+    { "kind": "indicator", "name": "Roc", "params": [10] },
+    { "kind": "indicator", "name": "Sma", "params": [10] },
+    { "kind": "indicator", "name": "Ema", "params": [10] },
+    { "kind": "price", "field": "close" }
+  ],
+  "symbols": ["AAA", "BBB", "CCC", "DDD", "EEE", "FFF"],
+  "normalize": "z_score",
+  "metric": "euclid",
+  "seed": 777,
+  "timeframe": "1h"
+}
