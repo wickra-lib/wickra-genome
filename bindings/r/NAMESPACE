@@ -1,0 +1,4 @@
+useDynLib(wickragenome, .registration = TRUE, .fixes = "C_")
+export(wkgenome_version)
+export(wkgenome_new)
+export(wkgenome_command)
