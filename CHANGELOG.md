@@ -25,5 +25,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   Determinism is enforced end to end (`BTreeMap` ordering, serial key-order
   reductions, a portable `SplitMix64` PRNG, and fixed `1e-8` output rounding) so
   the batch and streaming paths and every language binding agree byte-for-byte.
+- `wickra-genome` CLI over the core: `--spec` (JSON or TOML), `--data <dir>` of
+  per-symbol `<SYMBOL>.csv` files or `--stdin` (a JSON dataset), `--op
+  vector|similar|cluster|anomaly` with `--symbol` / `--k`, and `--format
+  text|json`. The JSON output is the raw `command_json` response, byte-identical
+  to what every language binding returns; the text output renders the vector
+  axes, neighbor list, clusters or ranked anomaly scores.
 
 [Unreleased]: https://github.com/wickra-lib/wickra-genome/commits/main
