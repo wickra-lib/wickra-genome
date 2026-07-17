@@ -1,0 +1,47 @@
+[build-system]
+requires = ["maturin>=1.7,<2.0"]
+build-backend = "maturin"
+
+[project]
+name = "wickra-genome"
+version = "0.1.0"
+description = "A vector database of the market: every asset a live vector over the streaming indicators, with similarity search, clustering and anomaly detection."
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+authors = [{ name = "kingchenc", email = "support@wickra.org" }]
+requires-python = ">=3.9"
+keywords = ["trading", "indicators", "vector-database", "similarity", "clustering", "anomaly-detection"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Financial and Insurance Industry",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Rust",
+    "Topic :: Office/Business :: Financial :: Investment",
+    "Topic :: Scientific/Engineering",
+]
+dependencies = []
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.urls]
+Homepage = "https://github.com/wickra-lib/wickra-genome"
+Repository = "https://github.com/wickra-lib/wickra-genome"
+Issues = "https://github.com/wickra-lib/wickra-genome/issues"
+
+[tool.maturin]
+manifest-path = "Cargo.toml"
+python-source = "python"
+module-name = "wickra_genome._wickra_genome"
+features = ["pyo3/extension-module"]
+strip = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-ra -q"

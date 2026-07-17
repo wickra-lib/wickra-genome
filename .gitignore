@@ -25,3 +25,4 @@ examples/c/build/
 examples/java/target/
 examples/csharp/**/bin/
 examples/csharp/**/obj/
+/.venv/
