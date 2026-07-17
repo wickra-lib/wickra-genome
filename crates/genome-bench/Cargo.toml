@@ -1,16 +1,31 @@
 [package]
 name = "genome-bench"
+description = "Criterion benchmarks for the Wickra Genome vector engine: build, similar and cluster throughput by universe size and feature count, on the parallel and single-threaded engines."
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
 authors.workspace = true
-description = "Criterion benchmarks for the Wickra Genome vector engine (scaffold)."
 publish = false
-
-[dependencies]
-genome-core = { path = "../genome-core", version = "0.1" }
 
 [lints]
 workspace = true
+
+[dependencies]
+# Default features off; the `parallel` feature below re-enables rayon so the
+# default bench measures the parallel build path and `--no-default-features`
+# measures the single-threaded (WASM) path.
+genome-core = { path = "../genome-core", version = "0.1", default-features = false }
+
+[dev-dependencies]
+criterion = { workspace = true }
+serde_json = { workspace = true }
+
+[features]
+default = ["parallel"]
+parallel = ["genome-core/parallel"]
+
+[[bench]]
+name = "genome"
+harness = false
