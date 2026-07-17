@@ -31,5 +31,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   text|json`. The JSON output is the raw `command_json` response, byte-identical
   to what every language binding returns; the text output renders the vector
   axes, neighbor list, clusters or ranked anomaly scores.
+- Ten language bindings over the `command_json` boundary: native Rust, Python
+  (PyO3), Node.js (napi), WASM (wasm-bindgen), and — over a C ABI hub — C, C++,
+  C#, Go, Java and R. Each forwards the command string verbatim, so every binding
+  returns byte-identical answers.
+- Golden corpus (`golden/`): a fixed six-symbol universe, five `GenomeSpec`
+  envelopes and the blessed `command_json` responses for `vector` / `similar` /
+  `cluster` / `anomaly`, reproducible byte-for-byte across the core, the CLI and
+  every binding.
+- Test, fuzz and bench surface: serde/validation conformance, a golden replay,
+  streaming-equals-batch, proptest invariants, cargo-fuzz targets and criterion
+  benchmarks; a Node cross-language golden pins the seeded-k-means result
+  byte-for-byte across languages.
+- A runnable example in every language (`examples/`) and eight CI workflows
+  (`ci.yml`, CodeQL, Scorecard, zizmor, links, bench, sync-metadata, release).
+- Documentation: `README`, `docs/{ARCHITECTURE,FEATURES,NORMALIZATION,METRICS,CLUSTERING,STREAMING,Cookbook}.md`,
+  and measured `BENCHMARKS.md` figures.
 
 [Unreleased]: https://github.com/wickra-lib/wickra-genome/commits/main
