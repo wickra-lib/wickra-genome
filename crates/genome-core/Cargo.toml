@@ -1,0 +1,26 @@
+[package]
+name = "genome-core"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Market-genome vector engine: every asset as a 514-dim live vector over the streaming indicators, with similarity, clustering and anomaly detection."
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+thiserror = { workspace = true }
+wickra-core = { workspace = true }
+wickra-data = { workspace = true }
+rayon = { workspace = true, optional = true }
+wickra-exchange = { workspace = true, optional = true }
+
+[features]
+default = ["parallel"]
+parallel = ["dep:rayon"]
+live = ["dep:wickra-exchange"]
+
+[lints]
+workspace = true

@@ -1,0 +1,16 @@
+[package]
+name = "genome-c"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Wickra Genome — c binding (scaffold)."
+publish = false
+
+[dependencies]
+genome-core = { path = "../../crates/genome-core", version = "0.1" }
+
+[lints]
+workspace = true

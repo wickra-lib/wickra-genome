@@ -1,0 +1,21 @@
+[package]
+name = "genome-cli"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+description = "Reference CLI for the Wickra Genome vector engine."
+
+[[bin]]
+name = "wickra-genome"
+path = "src/main.rs"
+
+[dependencies]
+genome-core = { path = "../genome-core", version = "0.1" }
+clap = { workspace = true }
+serde_json = { workspace = true }
+
+[lints]
+workspace = true
