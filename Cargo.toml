@@ -21,7 +21,7 @@ authors = ["wickra-lib"]
 [workspace.dependencies]
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-toml = "0.8"
+toml = "1.1"
 rust_decimal = "1"
 thiserror = "2"
 rayon = "1"
@@ -39,7 +39,7 @@ wickra-backtest-core = { git = "https://github.com/wickra-lib/wickra-backtest", 
 # wildcard ban does not fire.
 wickra-exchange = { git = "https://github.com/wickra-lib/wickra-exchange", version = "0.1" }
 cbindgen = "0.27"
-criterion = "0.5"
+criterion = "0.8"
 proptest = "1"
 
 [workspace.lints.rust]
