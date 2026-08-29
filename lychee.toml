@@ -22,4 +22,6 @@ exclude = [
     "^https?://pypi\\.org/project/wickra-genome",
     "^https?://www\\.npmjs\\.com/package/wickra-genome",
     "^https?://pkg\\.go\\.dev/github\\.com/wickra-lib/wickra-genome-go",
+    "^https?://www\\.nuget\\.org/packages/Wickra\\.Genome",
+    "^https?://central\\.sonatype\\.com/artifact/org\\.wickra/wickra-genome",
 ]
