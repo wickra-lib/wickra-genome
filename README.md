@@ -43,6 +43,13 @@ cross-section. The core is exposed as a **JSON-over-C-ABI data API**
 (`command_json`) in **Rust, Python, Node.js, WASM, C, C++, C#, Go, Java and R**,
 plus a reference CLI.
 
+> **Part of the [Wickra ecosystem](https://github.com/wickra-lib):** the same
+> data-driven core and ten-language binding surface also power
+> [wickra-backtest](https://github.com/wickra-lib/wickra-backtest),
+> [wickra-proof](https://github.com/wickra-lib/wickra-proof),
+> [wickra-verify](https://github.com/wickra-lib/wickra-verify) and 20 more — see
+> [the full list](https://github.com/wickra-lib).
+
 > **Status:** 0.1.0, unreleased. The vector engine, the reference CLI, all ten
 > language bindings, the golden corpus, the test/fuzz/bench surface and CI are in
 > place and green; the first tagged release publishes to the registries.
