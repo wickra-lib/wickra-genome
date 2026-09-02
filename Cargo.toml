@@ -28,8 +28,8 @@ rayon = "1"
 clap = { version = "4", features = ["derive"] }
 # The 514 O(1) streaming indicators that build every asset's feature vector, and
 # the Candle type / CSV reader.
-wickra-core = "0.9"
-wickra-data = "0.9"
+wickra-core = "1.0"
+wickra-data = "1.0"
 # The name -> indicator resolver (the only such factory in the ecosystem); it
 # pulls in wickra-core transitively and provides the serde `Candle`. Git pin so
 # cargo-deny's wildcard ban does not fire.
