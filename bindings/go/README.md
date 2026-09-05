@@ -1,3 +1,7 @@
+<p align="center">
+  <a href="https://wickra.org"><img src="https://raw.githubusercontent.com/wickra-lib/.github/main/profile/wickra-banner.webp?v=514" alt="Wickra Genome — a vector database of the whole market" width="100%"></a>
+</p>
+
 # Wickra Genome — Go
 
 Go bindings for the Wickra Genome vector engine over its C ABI hub (cgo). A
