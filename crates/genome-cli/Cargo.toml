@@ -19,7 +19,7 @@ path = "src/main.rs"
 all-features = true
 
 [dependencies]
-genome-core = { path = "../genome-core", version = "0.1" }
+genome-core = { workspace = true }
 clap = { workspace = true }
 serde_json = { workspace = true }
 
