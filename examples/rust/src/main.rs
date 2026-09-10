@@ -22,7 +22,15 @@ const BUILD: &str = r#"{"cmd":"build","data":{
 
 fn main() {
     let mut genome = Genome::new(SPEC).expect("valid spec");
-    genome.command_json(BUILD);
+    // `command_json` is `#[must_use]` for a reason: `build` is the command that
+    // loads the universe, and a refusal comes back in-band as
+    // `{"ok":false,...}`. Dropping it would leave the queries below running
+    // against an empty genome and reporting whatever that yields.
+    let built = genome.command_json(BUILD);
+    assert!(
+        !built.contains("\"ok\":false"),
+        "the build was refused: {built}"
+    );
 
     let version: Value =
         serde_json::from_str(&genome.command_json(r#"{"cmd":"version"}"#)).unwrap();
