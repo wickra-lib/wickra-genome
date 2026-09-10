@@ -3,6 +3,8 @@
 
 use crate::error::{Error, Result};
 use crate::feature::Feature;
+use crate::feeds::{Available, FeedKind};
+use crate::indicator_set::feed_kind;
 use serde::{Deserialize, Serialize};
 use std::collections::BTreeSet;
 use wickra_backtest_core::registry::build;
@@ -77,6 +79,37 @@ impl GenomeSpec {
         let spec: GenomeSpec = toml::from_str(s).map_err(|e| Error::Parse(e.to_string()))?;
         spec.validate()?;
         Ok(spec)
+    }
+
+    /// Reject the axes whose indicator needs a side feed the caller does not
+    /// supply.
+    ///
+    /// An indicator whose feed is absent resolves, ticks and returns nothing —
+    /// every bar, without complaint — so the axis would be `None` for ever. A
+    /// symbol with any `None` axis is never ready, so it drops out of
+    /// similarity search, clustering and anomaly scoring: one dead axis takes
+    /// the whole symbol with it, and `similar()` then reports the symbol as
+    /// unknown. Refusing the spec turns that into an error naming the indicator
+    /// and the feed.
+    ///
+    /// # Errors
+    /// [`Error::MissingFeed`] for the first axis whose feed is absent.
+    pub fn check_feeds(&self, available: Available) -> Result<()> {
+        for feat in &self.features {
+            let Feature::Indicator { name, .. } = feat else {
+                continue;
+            };
+            let Some(kind) = feed_kind(name) else {
+                continue;
+            };
+            if kind != FeedKind::Candle && !available.has(kind) {
+                return Err(Error::MissingFeed {
+                    indicator: name.clone(),
+                    feed: kind.as_str(),
+                });
+            }
+        }
+        Ok(())
     }
 
     /// Validate structural invariants and that every referenced indicator

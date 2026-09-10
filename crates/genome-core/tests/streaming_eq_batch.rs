@@ -5,7 +5,7 @@
 
 use std::collections::BTreeMap;
 
-use genome_core::{build, Candle, Genome, GenomeSpec};
+use genome_core::{build, Candle, Genome, GenomeSpec, SymbolInput};
 
 fn spec() -> GenomeSpec {
     serde_json::from_str(
@@ -19,7 +19,7 @@ fn spec() -> GenomeSpec {
 }
 
 /// A deterministic four-symbol universe, 30 bars each, distinct paths.
-fn universe() -> BTreeMap<String, Vec<Candle>> {
+fn universe() -> BTreeMap<String, SymbolInput> {
     let mut data = BTreeMap::new();
     for (idx, sym) in ["AAA", "BBB", "CCC", "DDD"].iter().enumerate() {
         let base = 100.0 + idx as f64 * 5.0;
@@ -39,7 +39,7 @@ fn universe() -> BTreeMap<String, Vec<Candle>> {
             });
             prev = close;
         }
-        data.insert((*sym).to_string(), candles);
+        data.insert((*sym).to_string(), candles.into());
     }
     data
 }
@@ -62,8 +62,8 @@ fn feed_matches_build_for_every_op() {
 
     // Streaming path: an empty genome fed candle-by-candle, per symbol.
     let mut streamed = Genome::with_spec(spec);
-    for (sym, candles) in &data {
-        for candle in candles {
+    for (sym, input) in &data {
+        for candle in input.candles() {
             streamed.feed(sym, candle).unwrap();
         }
     }

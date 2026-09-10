@@ -2,6 +2,7 @@
 //! state, plus the extraction of the ready rows in symbol-key order.
 
 use crate::error::Result;
+use crate::feeds::BarFeeds;
 use crate::spec::GenomeSpec;
 use crate::symbol_state::SymbolState;
 use std::collections::BTreeMap;
@@ -34,9 +35,23 @@ impl Universe {
 
     /// Fold one candle into a symbol's state, creating the state if needed.
     pub(crate) fn fold(&mut self, symbol: &str, candle: &Candle, spec: &GenomeSpec) -> Result<()> {
+        self.fold_with(symbol, candle, BarFeeds::default(), spec)
+    }
+
+    /// Fold one candle and its side feeds into a symbol's state, creating the
+    /// state if needed. The bar's feeds are checked against the spec first, so a
+    /// axis that could only ever be `None` is refused rather than folded.
+    pub(crate) fn fold_with(
+        &mut self,
+        symbol: &str,
+        candle: &Candle,
+        feeds: BarFeeds<'_>,
+        spec: &GenomeSpec,
+    ) -> Result<()> {
+        spec.check_feeds(feeds.available())?;
         self.ensure(symbol, spec)?;
         if let Some(state) = self.symbols.get_mut(symbol) {
-            state.fold(candle);
+            state.fold_with(candle, feeds);
         }
         Ok(())
     }
