@@ -14,11 +14,12 @@ vector space.
 
 ## The vector space
 
-Each asset is embedded as a **514-dimensional vector**: one coordinate per
-`wickra-core` streaming indicator, evaluated on the asset's candles at `O(1)` per
-bar. The same indicator registry the rest of the Wickra ecosystem uses builds the
-features, so a coordinate means exactly what it means everywhere else. Over the
-cross-section of embedded assets, `genome-core` answers three questions:
+Each asset is embedded as a vector whose axes the spec names: `features.len()` is
+the dimension, and each axis is one of the 497 indicators the shared registry
+resolves by name, evaluated on the asset's candles at `O(1)` per bar. That is the
+same registry the rest of the Wickra ecosystem uses, so a coordinate means exactly
+what it means everywhere else. Over the cross-section of embedded assets,
+`genome-core` answers three questions:
 
 - **Similarity** — nearest neighbours to a query asset under a chosen metric.
 - **Clustering** — a deterministic k-means partition of the market into regimes.

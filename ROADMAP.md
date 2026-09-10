@@ -10,7 +10,7 @@ golden corpus and CI are the foundation; these are the themes that follow.
 - Streaming / incremental updates: fold a new bar into every asset's vector and
   re-query without a full rebuild.
 - Feature weighting and subspace queries — search over a chosen slice of the
-  514-dimensional space.
+  embedded space.
 
 ## Later
 
