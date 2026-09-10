@@ -36,5 +36,5 @@ missing_panics_doc = "allow"
 # inherited workspace dependency. Default features off means no rayon, so the
 # wasm build's serial reductions are byte-identical to the native parallel run —
 # the exact cross-language golden check.
-genome-core = { path = "../../crates/genome-core", version = "0.1", default-features = false }
+genome-core = { path = "../../crates/genome-core", version = "0.1.0", default-features = false }
 wasm-bindgen = "0.2"

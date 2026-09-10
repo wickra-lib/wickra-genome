@@ -14,7 +14,7 @@ cargo build -p wickra-genome-c --release
 
 This produces `wickra_genome.{dll,so,dylib}` (and a static library) under
 `target/release/`. The header is committed at
-[`include/wickra_genome.h`](include/wickra_genome.h) and regenerated with:
+[`include/wickra_genome.h`](https://github.com/wickra-lib/wickra-genome/blob/main/bindings/c/include/wickra_genome.h) and regenerated with:
 
 ```bash
 cbindgen --config cbindgen.toml --crate wickra-genome-c --output include/wickra_genome.h
