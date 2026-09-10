@@ -7,6 +7,65 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Indicators that read a side feed produced nothing, silently, and took the
+  whole symbol with them.** `IndicatorSet::update` hardcoded the reference
+  series, derivatives tick, order book, trades and cross-section to absent, so
+  an indicator needing any of them ticked and returned nothing every bar. A
+  symbol with any `None` axis is never ready, and the ready universe is what
+  similarity search, clustering and anomaly scoring iterate — so one dead axis
+  emptied it. Measured before the fix, a spec of `Microprice` plus the close
+  gave `similar("AAA") = Err("unknown symbol: AAA")` for a symbol plainly in
+  the universe, `cluster()` = 0 and `anomaly()` = 0, with nothing naming the
+  cause.
+
+### Added
+
+- **Side feeds.** `SymbolSeries` carries the batch form (parallel arrays, one
+  entry per candle, mirroring `wickra-backtest`'s `RunRequest`) and a `feed`
+  carries the per-bar form (`StepFeeds`, reused verbatim). The bare candle
+  array still works, so every existing spec, fixture and binding payload is
+  unchanged.
+
+- **A feed check that refuses rather than answers.** `GenomeSpec::check_feeds`
+  rejects a spec whose axis needs a feed the caller cannot supply, naming the
+  indicator and the feed, on the batch build and on each streamed bar alike; a
+  feed whose length differs from the candle count is an error rather than a
+  fold that runs out part-way.
+
+- **Streaming-equals-batch tests in every binding.** Python, Node, Go, Java,
+  C#, R, WASM and C each drive both paths through the JSON boundary and compare
+  all four queries. Every other test in every language only ever sent
+  `{"cmd":"build"}`, so `feed` crossed those boundaries untested.
+
+- **A golden test for the C binding**, which had none, holding all twenty
+  spec × query comparisons byte-identical, plus `golden/data.json` so any
+  binding can load the corpus without a CSV parser of its own.
+
+- The blueprint scaffold: `LICENSES/`, `docs/README.md`, `docs/FEEDS.md`, the
+  five long-form issue templates, the CodeQL config, the actionlint and
+  CodSpeed workflows, the five check scripts, a C++ hull, licence copies in
+  every published crate and npm package, a WASM example, and dependabot
+  coverage for the fuzz workspace and the Go and Java examples.
+
+- CI gains `osv`, `links`, `binding-surface`, `semver`, `fuzz-smoke`,
+  `examples` and `python-wheel-container-smoke`; the release pipeline gains the
+  `gate` and `guard` jobs, provenance over the nupkg, jar and C ABI archives, a
+  Maven artifact on the release page, and a Go mirror that builds before it
+  publishes.
+
+### Changed
+
+- **The family pins move to the published releases.** `wickra-backtest-core`
+  comes from crates.io at 0.1.4 rather than a git rev 130 commits behind,
+  `wickra-exchange` at 0.1.3 rather than a git rev, and `wickra-core` /
+  `wickra-data` rise from 0.9 to 1.0, so the tree carries one set of indicator
+  types rather than two that share none.
+
+- `CMAKE_CXX_STANDARD` moves from 14 to 17, which the C++ hull requires and
+  nothing compiled it to find out.
+
 ### Added
 
 - Repository scaffold: governance, supply-chain configuration (`deny.toml`,

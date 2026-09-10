@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>wickra-genome WASM — the market as vectors</title>
+  <style>
+    body { font-family: ui-sans-serif, system-ui, sans-serif; max-width: 900px; margin: 2rem auto; padding: 0 1rem; color: #1d1d1d; }
+    h1 { margin-bottom: .25rem; }
+    .meta { color: #666; margin-top: 0; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1rem; font-variant-numeric: tabular-nums; }
+    th, td { border: 1px solid #ddd; padding: .5rem .75rem; text-align: right; }
+    th:first-child, td:first-child { text-align: left; }
+    th { background: #fafafa; }
+    code { background: #f4f4f4; padding: .1rem .25rem; border-radius: .2rem; font-size: .9em; }
+    pre { background: #f6f8fa; padding: .75rem; border-radius: .3rem; overflow-x: auto; }
+    button { padding: .5rem 1rem; }
+    #status { margin-top: 1rem; color: #666; }
+  </style>
+</head>
+<body>
+  <h1>wickra-genome WASM — the market as vectors</h1>
+  <p class="meta">
+    The same example every other language carries: build a genome over a tiny
+    three-symbol universe, then ask it for <code>AAA</code>'s nearest neighbour
+    and the biggest outlier. <code>AAA</code> and <code>BBB</code> sit close
+    together and <code>CCC</code> is far away, so the answers are
+    <code>BBB</code> and <code>CCC</code>. A spec is data rather than code, which
+    is why this page sends the identical spec bytes as
+    <code>examples/node/genome.js</code> and gets the identical answers.
+  </p>
+
+  <p><button id="go" disabled>Build genome</button></p>
+  <p id="status">Loading WASM module…</p>
+
+  <table id="neighbours" hidden>
+    <thead><tr><th>Symbol</th><th>Distance</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <pre id="raw" hidden></pre>
+
+  <script type="module">
+    import init, { Genome, version }
+      from "../../bindings/wasm/pkg/wickra_genome_wasm.js";
+
+    const SPEC = JSON.stringify({
+      features: [{ kind: "price", field: "close" }],
+      symbols: ["AAA", "BBB", "CCC"],
+      normalize: "z_score",
+      metric: "euclid",
+      seed: 24333,
+    });
+
+    const candle = (close) => ({
+      time: 0, open: close, high: close, low: close, close, volume: 0,
+    });
+
+    const DATA = {
+      AAA: [candle(1)],
+      BBB: [candle(2)],
+      CCC: [candle(100)],
+    };
+
+    const status = document.getElementById("status");
+    const go = document.getElementById("go");
+
+    function run() {
+      // A fresh genome per run: it carries per-symbol rolling state, so reusing
+      // one across clicks would fold the same candles in twice and the second
+      // answer would not match the inputs on screen.
+      const genome = new Genome(SPEC);
+      genome.command(JSON.stringify({ cmd: "build", data: DATA }));
+
+      const similar = JSON.parse(
+        genome.command(JSON.stringify({ cmd: "similar", symbol: "AAA", k: 2 })),
+      );
+      const anomaly = JSON.parse(genome.command(JSON.stringify({ cmd: "anomaly" })));
+
+      const body = document.querySelector("#neighbours tbody");
+      body.replaceChildren();
+      for (const neighbour of similar.neighbors ?? []) {
+        const tr = document.createElement("tr");
+        for (const cell of [neighbour.symbol, neighbour.distance]) {
+          const td = document.createElement("td");
+          td.textContent = String(cell);
+          tr.append(td);
+        }
+        body.append(tr);
+      }
+      document.getElementById("neighbours").hidden = false;
+
+      const raw = document.getElementById("raw");
+      raw.textContent = JSON.stringify({ similar, anomaly }, null, 2);
+      raw.hidden = false;
+
+      status.textContent =
+        `AAA nearest: ${similar.neighbors?.[0]?.symbol ?? "—"} · ` +
+        `top anomaly: ${anomaly.anomalies?.[0]?.symbol ?? "—"} — ` +
+        `wickra-genome ${version()}.`;
+    }
+
+    await init();
+    status.textContent = `Module ready — wickra-genome ${version()}.`;
+    go.disabled = false;
+    go.addEventListener("click", () => {
+      try {
+        run();
+      } catch (err) {
+        status.textContent = `Error: ${err}`;
+      }
+    });
+  </script>
+</body>
+</html>

@@ -33,6 +33,7 @@ cargo run -p genome-cli -- --spec examples/data/specs/dna.json \
 - **C#** — [`csharp/Genome/`](csharp/Genome/): `dotnet run --project examples/csharp/Genome`
 - **Java** — [`java/`](java/): `mvn -q compile exec:java -Dexec.mainClass=org.wickra.genome.examples.Genome`
 - **R** — [`r/genome.R`](r/genome.R): `R CMD INSTALL bindings/r && Rscript examples/r/genome.R`
+- **WASM** — [`wasm/genome.html`](wasm/genome.html): `wasm-pack build bindings/wasm --target web`, serve the repository root, then open `examples/wasm/genome.html`
 - **C / C++** — [`c/`](c/): build the C ABI, then CMake + ctest:
 
   ```bash

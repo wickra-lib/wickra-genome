@@ -54,10 +54,33 @@ plus a reference CLI.
 > language bindings, the golden corpus, the test/fuzz/bench surface and CI are in
 > place and green; the first tagged release publishes to the registries.
 
+- **Batch** — `build(data, spec)` folds every symbol's whole history into a vector.
+- **Streaming** — `feed(symbol, candle)`, O(1) per tick, over the state so far.
+- **Side feeds** — an axis whose indicator reads a reference series, a derivatives tick, an order book, the bar's trades or the market cross-section gets it, or the spec is refused by name.
+
+```rust
+use genome_core::{build, GenomeSpec, SymbolInput};
+use std::collections::BTreeMap;
+
+let spec = GenomeSpec::from_json(r#"{
+    "symbols":  ["AAA", "BBB"],
+    "features": [{"kind": "indicator", "name": "Rsi", "params": [14]},
+                 {"kind": "price", "field": "close"}],
+    "normalize": "z_score", "metric": "euclid"
+}"#)?;
+
+let mut data: BTreeMap<String, SymbolInput> = BTreeMap::new();
+data.insert("AAA".into(), candles.into());
+
+let genome = build(&data, &spec)?;
+println!("{:?}", genome.similar("AAA", 5)?);
+```
+
 ## Documentation
 
 - [ARCHITECTURE](docs/ARCHITECTURE.md) — the engine, the `command_json` boundary and the determinism contract.
 - [FEATURES](docs/FEATURES.md) — the feature axes and the `GenomeSpec` JSON.
+- [FEEDS](docs/FEEDS.md) — the side feeds an indicator reads beyond the candle, and why a spec is refused rather than answered with an axis that can never be ready.
 - [NORMALIZATION](docs/NORMALIZATION.md) — the cross-section z-score and min–max formulas.
 - [METRICS](docs/METRICS.md) — the cosine and euclidean distance metrics.
 - [CLUSTERING](docs/CLUSTERING.md) — seeded k-means++ and the portable PRNG.
@@ -167,19 +190,49 @@ Runnable examples for all ten languages live in [`examples/`](examples/).
 | `golden/`               | The generate-once / replay-everywhere byte-golden corpus.   |
 | `examples/`             | A runnable example per language.                            |
 
-## Building from source
+## Building everything from source
 
 ```bash
-cargo build
-cargo test
+cargo build --workspace --all-features                 # Rust core + CLI + C ABI
+(cd bindings/python && maturin develop --release)      # Python
+(cd bindings/node   && npm ci && npm run build)        # Node
+(cd bindings/wasm   && wasm-pack build --target web)   # WASM
+(cd bindings/csharp && dotnet build)                   # C#
+(cd bindings/go     && go build ./...)                 # Go
+(cd bindings/java   && mvn -q package)                 # Java
+R CMD INSTALL bindings/r                               # R
 ```
+
+Each binding builds against the C ABI hub in `bindings/c`, so build that first —
+`cargo build -p wickra-genome-c` — and put the resulting library on the loader
+path.
+
+## Testing
+
+```bash
+cargo test --workspace --all-features
+cargo clippy --workspace --all-targets --all-features -- -D warnings
+cargo fmt --all --check
+```
+
+Every binding runs the same golden corpus from [`golden/`](golden/) and must
+produce the identical bytes; that corpus is the cross-language contract, not a
+per-language approximation. `python scripts/check_binding_surface.py` asserts
+the ten surfaces stayed in step.
 
 ## Requirements
 
-- Rust 1.86+ (MSRV; the Node binding needs 1.88). Genome depends on `wickra-core`
-  and `wickra-data` (crates.io) for the indicators and the candle reader, resolves
-  indicators through `wickra-backtest-core`, and — behind the `live` feature —
-  uses `wickra-exchange` (a git dependency) for a live market feed.
+- **Rust 1.86+** — the workspace MSRV; the Node binding needs **Rust 1.88**.
+- **Python 3.9+** — the Python binding.
+- **Node 22+** — the Node binding.
+- **Go 1.23+** — the Go binding.
+- **Java 22+** — the Java binding.
+- **R 2.10+** — the R package.
+
+Genome depends on `wickra-core` and `wickra-data` for the indicators and the
+candle reader, resolves indicators through `wickra-backtest-core`, and — behind
+the `live` feature — uses `wickra-exchange` for a live market feed. All four come
+from crates.io.
 
 ## Benchmarks
 
@@ -194,6 +247,41 @@ recorded market data and specs only — no keys, no order placement.
 ## Contributing
 
 See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Ecosystem
+
+Part of the [Wickra](https://github.com/wickra-lib/wickra) family — each one a
+data-driven core with a CLI and the same ten-language binding surface:
+
+- [**wickra**](https://github.com/wickra-lib/wickra) — main library (Rust core + Python / Node.js / WASM bindings + a C ABI for C / C++ / C# / Go / Java / R)
+- [**wickra-playground**](https://github.com/wickra-lib/wickra-playground) — a polyglot strategy playground: one StrategySpec live side by side in Python, Rust, JS and Go, entirely in the browser
+- [**wickra-exchange**](https://github.com/wickra-lib/wickra-exchange) — unified market-data + execution across ten crypto exchanges
+- [**wickra-backtest**](https://github.com/wickra-lib/wickra-backtest) — event-driven backtester over the Wickra core
+- [**wickra-terminal**](https://github.com/wickra-lib/wickra-terminal) — the trading terminal: a TUI and a browser renderer over the stack
+- [**wickra-xray**](https://github.com/wickra-lib/wickra-xray) — market-microstructure explorer: footprint, order-book heatmap, liquidation map, funding/OI divergence
+- [**wickra-radar**](https://github.com/wickra-lib/wickra-radar) — perp-universe alert radar: OI delta, funding flip, book imbalance, liquidation clusters, OI/price divergence
+- [**wickra-copilot**](https://github.com/wickra-lib/wickra-copilot) — local market copilot grounded in real order-book, liquidation and funding microstructure
+- [**wickra-shazam**](https://github.com/wickra-lib/wickra-shazam) — match an asset's current microstructure fingerprint against its entire history
+- [**wickra-benchmark**](https://github.com/wickra-lib/wickra-benchmark) — reproducible, golden-verified benchmark suite — recompute any (strategy, dataset, report) in ten languages and confirm it byte-for-byte
+- [**wickra-strategy-ci**](https://github.com/wickra-lib/wickra-strategy-ci) — Jest for trading strategies: golden-pin the report, catch regressions in CI, property-test against fuzzed data
+- [**wickra-verify**](https://github.com/wickra-lib/wickra-verify) — confirm or refute a claimed backtest report against its strategy and data, in ten languages
+- [**wickra-proof**](https://github.com/wickra-lib/wickra-proof) — Proof-of-Backtest: deterministic (spec, data) → report + blake3 hash, recomputable byte-for-byte in ten languages
+- [**wickra-zk**](https://github.com/wickra-lib/wickra-zk) — prove a backtest zero-knowledge — on-chain-verifiable performance without revealing the data or the strategy
+- [**wickra-impact**](https://github.com/wickra-lib/wickra-impact) — the backtester that knows you would have moved the market: agent-based fills on the real historical L2 order book
+- [**wickra-darwin**](https://github.com/wickra-lib/wickra-darwin) — evolutionary strategy search at millions of backtests per second, mutating and crossing JSON specs across the 514-indicator space
+- [**wickra-gym**](https://github.com/wickra-lib/wickra-gym) — a Gymnasium-compatible, microstructure-aware backtest environment with O(1) steps for deterministic RL rollouts
+- [**wickra-feature-store**](https://github.com/wickra-lib/wickra-feature-store) — OHLCV and microstructure streams into ML-ready feature matrices over 514 O(1) streaming indicators
+- [**wickra-timemachine**](https://github.com/wickra-lib/wickra-timemachine) — scrub the whole market like a video — every symbol, full order book, rewound to any moment via deterministic re-fold
+- [**wickra-synth**](https://github.com/wickra-lib/wickra-synth) — deterministic synthetic market microstructure: OHLCV, order book, trades and funding from a single seed
+- [**wickra-compile**](https://github.com/wickra-lib/wickra-compile) — compile a strategy spec into a standalone deployable: a WASM module, a self-contained binary, or a `no_std` artifact
+- [**wickra-embed**](https://github.com/wickra-lib/wickra-embed) — allocation-free, `no_std` streaming indicators for bare-metal and HFT, byte-for-byte identical to the core
+- [**wickra-pico**](https://github.com/wickra-lib/wickra-pico) — the O(1) indicator core running bare-metal on a $5 Raspberry Pi Pico — the LED blinks on the EMA cross
+
+The screener's own guides live in [`docs/`](docs/) beside the code; its site,
+with the in-browser demo and the benchmark figures, is at
+[screener.wickra.org](https://screener.wickra.org). The indicator library's
+reference is at [docs.wickra.org](https://docs.wickra.org) and the org landing
+page at [wickra.org](https://wickra.org).
 
 ## License
 
