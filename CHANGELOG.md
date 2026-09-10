@@ -9,6 +9,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **The Java example's `exec-maven-plugin` was a version behind the family.**
+  Dependabot opened the 3.5.0 -> 3.6.3 bump in the four sibling repositories
+  that carry the same example pom and not in this one, so it would have stayed
+  on 3.5.0 until the next cycle noticed. Verified by running the example on
+  3.6.3.
+
 - **Six SHA-pinned actions sat on two lines across the family**, and two of the
   splits were inside this repository. `actions/setup-node` is pinned at the same
   commit everywhere, but some call sites annotated it `# v6.4.0`; GitHub's tag
