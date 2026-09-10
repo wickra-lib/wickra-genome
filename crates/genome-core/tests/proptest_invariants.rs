@@ -6,7 +6,7 @@
 
 use std::collections::BTreeMap;
 
-use genome_core::{build, Candle, GenomeSpec};
+use genome_core::{build, Candle, GenomeSpec, SymbolInput};
 use proptest::prelude::*;
 
 /// A spec over price-close and RSI(14), for `n` symbols with a fixed seed.
@@ -22,7 +22,7 @@ fn spec_for(symbols: &[String], seed: u64) -> GenomeSpec {
 
 /// A random universe: `n` symbols (`S0..Sn`), each a `bars`-long positive walk
 /// driven by the per-symbol/per-bar step list.
-fn universe(steps: &[Vec<f64>]) -> (Vec<String>, BTreeMap<String, Vec<Candle>>) {
+fn universe(steps: &[Vec<f64>]) -> (Vec<String>, BTreeMap<String, SymbolInput>) {
     let mut symbols = Vec::new();
     let mut data = BTreeMap::new();
     for (idx, walk) in steps.iter().enumerate() {
@@ -42,7 +42,7 @@ fn universe(steps: &[Vec<f64>]) -> (Vec<String>, BTreeMap<String, Vec<Candle>>) 
             });
             price = next;
         }
-        data.insert(sym, candles);
+        data.insert(sym, candles.into());
     }
     (symbols, data)
 }

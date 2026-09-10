@@ -29,6 +29,7 @@ mod cluster;
 mod config;
 mod error;
 mod feature;
+pub mod feeds;
 mod genome;
 mod indicator_set;
 mod metric;
@@ -43,7 +44,9 @@ mod universe;
 pub use config::Config;
 pub use error::{Error, Result};
 pub use feature::{Feature, PriceField};
-pub use genome::{build, Genome};
+pub use feeds::{Available, BarFeeds, FeedKind, OwnedBarFeeds, SymbolInput, SymbolSeries};
+pub use genome::{build, build_series, Genome};
+pub use indicator_set::feed_kind;
 pub use spec::{default_seed, GenomeSpec, Metric, Normalize};
 pub use types::{Anomaly, Cluster, Neighbor, Vector};
 

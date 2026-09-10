@@ -1,7 +1,9 @@
 //! Load the spec and universe, run the query, and render the answer.
 
 use crate::args::{Args, Format, Op};
-use genome_core::{build, Candle, Cluster, Config, Genome, GenomeSpec, Neighbor, Vector};
+use genome_core::{
+    build, Candle, Cluster, Config, Genome, GenomeSpec, Neighbor, SymbolInput, Vector,
+};
 use serde_json::json;
 use std::collections::BTreeMap;
 use std::fmt::Write as _;
@@ -113,7 +115,7 @@ fn load_spec(path: &Path) -> Result<GenomeSpec, String> {
 }
 
 /// Load a universe from a directory of `<SYMBOL>.csv` files.
-fn load_data_dir(dir: &Path) -> Result<BTreeMap<String, Vec<Candle>>, String> {
+fn load_data_dir(dir: &Path) -> Result<BTreeMap<String, SymbolInput>, String> {
     let mut data = BTreeMap::new();
     let entries = fs::read_dir(dir).map_err(|e| format!("read dir {}: {e}", dir.display()))?;
     for entry in entries {
@@ -128,13 +130,20 @@ fn load_data_dir(dir: &Path) -> Result<BTreeMap<String, Vec<Candle>>, String> {
             .to_string();
         let content =
             fs::read_to_string(&path).map_err(|e| format!("read {}: {e}", path.display()))?;
-        data.insert(symbol, parse_csv(&content)?);
+        // CSV carries OHLCV only, so these series carry no side feeds; a spec
+        // needing one is refused by name rather than folded into a dead axis.
+        data.insert(symbol, parse_csv(&content)?.into());
     }
     Ok(data)
 }
 
-/// Load a universe as a JSON dataset (`{"SYMBOL": [candle, ...]}`) from stdin.
-fn load_stdin() -> Result<BTreeMap<String, Vec<Candle>>, String> {
+/// Load a universe as a JSON dataset from stdin.
+///
+/// A symbol is either a bare candle array (`{"SYMBOL": [candle, ...]}`) or the
+/// full series with its side feeds
+/// (`{"SYMBOL": {"candles": [...], "books": [...]}}`), so a spec naming an
+/// order-book or trade-flow indicator can be fed from the command line.
+fn load_stdin() -> Result<BTreeMap<String, SymbolInput>, String> {
     let mut buf = String::new();
     std::io::stdin()
         .read_to_string(&mut buf)

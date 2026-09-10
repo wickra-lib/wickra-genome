@@ -5,7 +5,7 @@
 
 use std::collections::BTreeMap;
 
-use genome_core::{build, Candle, Feature, GenomeSpec, Metric, Normalize, PriceField};
+use genome_core::{build, Candle, Feature, GenomeSpec, Metric, Normalize, PriceField, SymbolInput};
 
 fn json_round_trip<T>(value: &T)
 where
@@ -149,7 +149,7 @@ fn unknown_indicator_is_a_build_error() {
             "symbols":["AAA"],"normalize":"z_score","metric":"euclid"}"#,
     )
     .unwrap();
-    let mut data: BTreeMap<String, Vec<Candle>> = BTreeMap::new();
+    let mut data: BTreeMap<String, SymbolInput> = BTreeMap::new();
     data.insert(
         "AAA".into(),
         vec![Candle {
@@ -159,7 +159,8 @@ fn unknown_indicator_is_a_build_error() {
             low: 1.0,
             close: 1.0,
             volume: 0.0,
-        }],
+        }]
+        .into(),
     );
     assert!(
         build(&data, &spec).is_err(),

@@ -3,6 +3,7 @@
 //! feature vector at the latest bar.
 
 use crate::feature::{Feature, PriceField};
+use crate::feeds::BarFeeds;
 use crate::indicator_set::IndicatorSet;
 use crate::spec::GenomeSpec;
 use wickra_backtest_core::Candle;
@@ -33,9 +34,10 @@ impl SymbolState {
         })
     }
 
-    /// Fold one candle in O(1): tick every indicator and shift the candle window.
-    pub(crate) fn fold(&mut self, candle: &Candle) {
-        self.inds.update(candle);
+    /// Fold one candle and its side feeds in O(1): tick every indicator and
+    /// shift the candle window.
+    pub(crate) fn fold_with(&mut self, candle: &Candle, feeds: BarFeeds<'_>) {
+        self.inds.update(candle, feeds);
         self.cur = Some(*candle);
         self.bars += 1;
     }
@@ -124,7 +126,7 @@ mod tests {
     fn not_ready_inside_warmup() {
         let spec = spec();
         let mut state = SymbolState::new(&spec).unwrap();
-        state.fold(&candle(1.0));
+        state.fold_with(&candle(1.0), BarFeeds::default());
         assert!(!state.is_ready());
         assert!(state.raw_vector(&spec).is_none());
     }
@@ -134,7 +136,7 @@ mod tests {
         let spec = spec();
         let mut state = SymbolState::new(&spec).unwrap();
         for c in [1.0, 2.0, 3.0] {
-            state.fold(&candle(c));
+            state.fold_with(&candle(c), BarFeeds::default());
         }
         assert!(state.is_ready());
         let v = state.raw_vector(&spec).unwrap();

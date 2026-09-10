@@ -10,7 +10,7 @@
 use std::collections::BTreeMap;
 
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion, Throughput};
-use genome_core::{build, Candle, GenomeSpec};
+use genome_core::{build, Candle, GenomeSpec, SymbolInput};
 
 const BARS: usize = 64;
 
@@ -35,8 +35,10 @@ fn candles(idx: usize) -> Vec<Candle> {
 }
 
 /// A universe of `n` symbols (`S000000..`).
-fn universe(n: usize) -> BTreeMap<String, Vec<Candle>> {
-    (0..n).map(|i| (format!("S{i:06}"), candles(i))).collect()
+fn universe(n: usize) -> BTreeMap<String, SymbolInput> {
+    (0..n)
+        .map(|i| (format!("S{i:06}"), candles(i).into()))
+        .collect()
 }
 
 /// A spec with `n_features` axes, cycling four indicator families with varying

@@ -15,6 +15,16 @@ pub enum Error {
     #[error("unknown symbol: {0}")]
     UnknownSymbol(String),
     /// A spec is structurally invalid (empty, duplicated, or bad field).
+    /// A feature names an indicator whose side feed the build cannot supply.
+    /// Without this the axis would be `None` for ever, and a symbol with any
+    /// `None` axis never becomes ready -- so it silently leaves the universe.
+    #[error("{indicator} needs the {feed} feed, which this build does not supply")]
+    MissingFeed {
+        /// The registry name that needs the feed.
+        indicator: String,
+        /// The feed it consumes, as named in the spec payload.
+        feed: &'static str,
+    },
     #[error("bad spec: {0}")]
     BadSpec(String),
     /// Input market data was malformed.

@@ -4,7 +4,9 @@
   "description": "Native binding for wickra-genome (Windows arm64 MSVC). Installed automatically as an optional dependency of wickra-genome on matching platforms.",
   "main": "wickra-genome.win32-arm64-msvc.node",
   "files": [
-    "wickra-genome.win32-arm64-msvc.node"
+    "wickra-genome.win32-arm64-msvc.node",
+    "LICENSE-MIT",
+    "LICENSE-APACHE"
   ],
   "license": "MIT OR Apache-2.0",
   "engines": {

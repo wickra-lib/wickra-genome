@@ -11,7 +11,7 @@ use std::collections::BTreeMap;
 use std::fs;
 use std::path::PathBuf;
 
-use genome_core::{build, Candle, GenomeSpec};
+use genome_core::{build, Candle, GenomeSpec, SymbolInput};
 
 fn golden_dir() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../golden")
@@ -45,7 +45,7 @@ fn parse_csv(content: &str) -> Vec<Candle> {
 }
 
 /// Load the shared `golden/data/` universe (one `<SYMBOL>.csv` per symbol).
-fn load_universe() -> BTreeMap<String, Vec<Candle>> {
+fn load_universe() -> BTreeMap<String, SymbolInput> {
     let dir = golden_dir().join("data");
     let mut data = BTreeMap::new();
     for entry in fs::read_dir(&dir).unwrap() {
@@ -54,7 +54,10 @@ fn load_universe() -> BTreeMap<String, Vec<Candle>> {
             continue;
         }
         let symbol = path.file_stem().unwrap().to_str().unwrap().to_owned();
-        data.insert(symbol, parse_csv(&fs::read_to_string(&path).unwrap()));
+        data.insert(
+            symbol,
+            parse_csv(&fs::read_to_string(&path).unwrap()).into(),
+        );
     }
     data
 }

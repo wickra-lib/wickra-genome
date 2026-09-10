@@ -5,6 +5,7 @@
 //! byte-identical answers.
 
 use crate::error::{Error, Result};
+use crate::feeds::{BarFeeds, CoreSeries, OwnedBarFeeds, SymbolInput, SymbolSeries};
 use crate::query::{anomaly, similar, vector};
 use crate::spec::GenomeSpec;
 use crate::types::{Anomaly, Cluster, Neighbor, Vector};
@@ -12,7 +13,7 @@ use crate::universe::Universe;
 use serde::{Deserialize, Serialize};
 use serde_json::{json, Value};
 use std::collections::BTreeMap;
-use wickra_backtest_core::Candle;
+use wickra_backtest_core::{Candle, StepFeeds};
 
 /// The `similar` response envelope. A typed struct (not the `json!` macro) so
 /// serde preserves field order and every binding emits byte-identical JSON.
@@ -93,6 +94,15 @@ impl Genome {
         self.universe.fold(symbol, candle, &self.spec)
     }
 
+    /// Fold one candle and the bar's side feeds into a symbol's rolling state.
+    ///
+    /// # Errors
+    /// [`Error::MissingFeed`] if an axis needs a feed this bar does not carry,
+    /// and registry errors when the spec references an unknown indicator.
+    pub fn feed_with(&mut self, symbol: &str, candle: &Candle, feeds: BarFeeds<'_>) -> Result<()> {
+        self.universe.fold_with(symbol, candle, feeds, &self.spec)
+    }
+
     /// The self-describing feature vector for a symbol.
     ///
     /// # Errors
@@ -154,7 +164,8 @@ impl Genome {
             "feed" => {
                 let symbol = str_field(&env, "symbol")?;
                 let candle: Candle = field(&env, "candle")?;
-                self.feed(&symbol, &candle)?;
+                let owned = owned_feeds(&env, &symbol)?;
+                self.feed_with(&symbol, &candle, owned.as_bar())?;
                 Ok(ok_json())
             }
             "feed_batch" => {
@@ -166,7 +177,7 @@ impl Genome {
                 Ok(ok_json())
             }
             "build" => {
-                let data: BTreeMap<String, Vec<Candle>> = field(&env, "data")?;
+                let data: BTreeMap<String, SymbolInput> = field(&env, "data")?;
                 let genome = build(&data, &self.spec)?;
                 self.universe = genome.universe;
                 Ok(ok_json())
@@ -209,18 +220,43 @@ impl Genome {
 ///
 /// # Errors
 /// Propagates registry errors from building a symbol's indicator set.
-pub fn build(data: &BTreeMap<String, Vec<Candle>>, spec: &GenomeSpec) -> Result<Genome> {
+pub fn build(data: &BTreeMap<String, SymbolInput>, spec: &GenomeSpec) -> Result<Genome> {
+    let series: BTreeMap<String, SymbolSeries> = data
+        .iter()
+        .map(|(sym, input)| (sym.clone(), input.to_series()))
+        .collect();
+    build_series(&series, spec)
+}
+
+/// Build a genome from a symbol -> series map, the fed form.
+///
+/// This is the single fold entry; [`build`] widens its bare-candle shorthand
+/// onto it.
+///
+/// # Errors
+/// As [`build`], plus [`Error::MissingFeed`] if an axis needs a feed a symbol
+/// does not carry and [`Error::Data`] on a feed whose length differs from the
+/// candle count.
+pub fn build_series(data: &BTreeMap<String, SymbolSeries>, spec: &GenomeSpec) -> Result<Genome> {
+    let mut prepared: Vec<(&String, CoreSeries)> = Vec::with_capacity(data.len());
+    for (sym, series) in data {
+        let core = CoreSeries::build(sym, series.clone())?;
+        spec.check_feeds(core.available())?;
+        prepared.push((sym, core));
+    }
+
     #[cfg(feature = "parallel")]
     let states: Vec<(String, crate::symbol_state::SymbolState)> = {
         use rayon::prelude::*;
-        data.par_iter()
-            .map(|(sym, candles)| fold_symbol(sym, candles, spec))
+        prepared
+            .par_iter()
+            .map(|(sym, series)| fold_symbol(sym, series, spec))
             .collect::<Result<Vec<_>>>()?
     };
     #[cfg(not(feature = "parallel"))]
-    let states: Vec<(String, crate::symbol_state::SymbolState)> = data
+    let states: Vec<(String, crate::symbol_state::SymbolState)> = prepared
         .iter()
-        .map(|(sym, candles)| fold_symbol(sym, candles, spec))
+        .map(|(sym, series)| fold_symbol(sym, series, spec))
         .collect::<Result<Vec<_>>>()?;
 
     let mut universe = Universe::new();
@@ -236,14 +272,26 @@ pub fn build(data: &BTreeMap<String, Vec<Candle>>, spec: &GenomeSpec) -> Result<
 /// Fold one symbol's candles into a fresh state.
 fn fold_symbol(
     sym: &str,
-    candles: &[Candle],
+    series: &CoreSeries,
     spec: &GenomeSpec,
 ) -> Result<(String, crate::symbol_state::SymbolState)> {
     let mut state = crate::symbol_state::SymbolState::new(spec)?;
-    for c in candles {
-        state.fold(c);
+    for (i, candle) in series.candles.iter().enumerate() {
+        state.fold_with(candle, series.bar(i));
     }
     Ok((sym.to_string(), state))
+}
+
+/// The optional per-bar side feeds of a `feed` command. Absent means the bar
+/// carries none, which is the candle-only shorthand every existing caller sends.
+fn owned_feeds(env: &Value, symbol: &str) -> Result<OwnedBarFeeds> {
+    match env.get("feeds") {
+        None | Some(Value::Null) => Ok(OwnedBarFeeds::default()),
+        Some(value) => {
+            let feeds: StepFeeds = serde_json::from_value(value.clone())?;
+            OwnedBarFeeds::build(symbol, feeds)
+        }
+    }
 }
 
 /// Deserialize a required object field into `T`.
