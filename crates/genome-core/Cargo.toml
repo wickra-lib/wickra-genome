@@ -6,7 +6,7 @@ rust-version.workspace = true
 license.workspace = true
 repository.workspace = true
 authors.workspace = true
-description = "Market-genome vector engine: every asset as a 514-dim live vector over the streaming indicators, with similarity, clustering and anomaly detection."
+description = "Market-genome vector engine: every asset as a live vector over the streaming indicators, with similarity, clustering and anomaly detection."
 
 [package.metadata.docs.rs]
 # Document every feature so an optional surface is not missing from the

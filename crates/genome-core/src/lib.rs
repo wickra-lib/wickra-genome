@@ -1,7 +1,8 @@
 //! Wickra Genome — the market-genome vector engine.
 //!
-//! Every asset in a universe becomes a live feature vector over the 514 O(1)
-//! streaming indicators of `wickra-core`: a vector database of the whole market.
+//! Every asset in a universe becomes a live feature vector over the 497 O(1)
+//! streaming indicators the shared registry resolves by name: a vector database
+//! of the whole market.
 //! Four queries run over that one vector space — [`Genome::vector`] (a symbol's
 //! axes), [`Genome::similar`] (k nearest neighbors), [`Genome::cluster`] (seeded
 //! k-means) and [`Genome::anomaly`] (nearest-neighbor outlier scores) — so you

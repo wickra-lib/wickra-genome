@@ -9,6 +9,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **The headline indicator count was the catalogue figure, not the reachable
+  one.** 514 is what the `wickra-core` catalogue ships; what a spec can actually
+  name is what the shared registry in `wickra-backtest-core` resolves, and that
+  `build` match has 497 arms. The two are different sets — bar builders emit
+  bars rather than a value per bar, and a handful of indicators the registry
+  does not carry yet — so every 514 promised names a spec would be refused for.
+
+- **The vector was described as fixed at 514 dimensions.** `GenomeSpec::features`
+  is what fixes it — `features.len()` is the dimension, chosen per spec — and the
+  axes are drawn from the 497 names the registry resolves. `ARCHITECTURE.md`,
+  `ROADMAP.md`, the core crate description and its module docs all said otherwise.
+
+- **`CITATION.cff` described the wrong project.** The abstract and the keyword
+  list were the feature store's, down to "a data-driven FeatureSpec ...
+  materialized as a feature matrix" for a vector database. `CITATION.cff` is
+  what GitHub's citation box and Zenodo quote back at a reader as the project's
+  own words, so it is the one file where a wrong description is the project
+  saying it.
+
+- **The Ecosystem section repeated two claims their own repositories had already
+  corrected**: DARWIN at "millions of backtests per second" across "the
+  514-indicator space", where its benchmark says hundreds of thousands over the
+  registry, and GENOME as "a 514-dim live vector", where the dimension is
+  whatever the spec's feature list names.
+
 - **Indicators that read a side feed produced nothing, silently, and took the
   whole symbol with them.** `IndicatorSet::update` hardcoded the reference
   series, derivatives tick, order book, trades and cross-section to absent, so
