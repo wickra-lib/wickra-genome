@@ -22,7 +22,7 @@ lib=""
 # across the CDN, and a transient network blip should not fail the build either.
 # Retry base R's download.file with a backoff (~2 min total) rather than giving
 # up on the first miss.
-wkscreen_download() {
+fetch_release_archive() {
   _url="$1"
   _dest="$2"
   _attempt=1
@@ -80,7 +80,7 @@ else
   esac
   url="https://github.com/wickra-lib/wickra-genome/releases/download/v${version}/wickra-genome-c-${triple}.tar.gz"
   echo "wickra-genome: downloading the C ABI ${triple} for v${version}"
-  wkscreen_download "${url}" "src/wickra-genome-c.tar.gz" || exit 1
+  fetch_release_archive "${url}" "src/wickra-genome-c.tar.gz" || exit 1
   "${R_HOME}/bin/Rscript" -e "untar('src/wickra-genome-c.tar.gz', exdir = 'src/wickra-genome-c')"
   inc="src/wickra-genome-c/wickra-genome-c-${triple}/include"
   lib="src/wickra-genome-c/wickra-genome-c-${triple}/lib"

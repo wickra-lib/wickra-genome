@@ -14,7 +14,7 @@ Thanks for using `wickra-genome`. Here is where to go for help.
 
 Open a [GitHub issue](https://github.com/wickra-lib/wickra-genome/issues) using
 the bug-report or feature-request template. Please include the version, the
-binding/language you used, a minimal `FeatureSpec` and a small sample universe, and
+binding/language you used, a minimal `GenomeSpec` and a small sample universe, and
 the expected vs actual matrix.
 
 ## Security
