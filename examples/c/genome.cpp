@@ -1,10 +1,17 @@
-// A runnable C++ example: build a genome over a tiny three-symbol universe
-// through the wickra-genome C ABI and print the nearest-neighbour response.
+// A runnable C++ example: build a genome over a tiny three-symbol universe and
+// print the nearest-neighbour response.
+//
+// This goes through `wickra_genome.hpp`, the C++ hull shipped beside the C
+// header, because that hull is what a C++ caller is meant to use: it owns and
+// frees the handle, runs the two-call length protocol behind
+// `wickra_genome_command` for you, and turns a refusal into an exception rather
+// than a negative integer that is easy to ignore. Calling the C functions
+// directly from C++ works too -- `genome.c` shows that -- but then the hull
+// would be shipped without anything building it.
 #include <cstdio>
 #include <string>
-#include <vector>
 
-#include "wickra_genome.h"
+#include "wickra_genome.hpp"
 
 static const char *SPEC =
     "{\"features\":[{\"kind\":\"price\",\"field\":\"close\"}],"
@@ -19,34 +26,17 @@ static const char *BUILD_CMD =
 
 static const char *SIMILAR_CMD = "{\"cmd\":\"similar\",\"symbol\":\"AAA\",\"k\":2}";
 
-static bool run(WickraGenome *genome, const char *cmd) {
-    int len = wickra_genome_command(genome, cmd, nullptr, 0);
-    if (len < 0) {
-        std::fprintf(stderr, "command failed: code %d\n", len);
-        return false;
-    }
-    std::vector<char> buf(static_cast<size_t>(len) + 1);
-    wickra_genome_command(genome, cmd, buf.data(), buf.size());
-    std::printf("%s\n", buf.data());
-    return true;
-}
-
 int main() {
-    WickraGenome *genome = wickra_genome_new(SPEC);
-    if (!genome) {
-        std::fprintf(stderr, "failed to build genome\n");
+    try {
+        wickra::Genome genome(SPEC);
+        std::printf("%s\n", genome.command(BUILD_CMD).c_str());
+        std::printf("wickra-genome %s\n", wickra::Genome::version().c_str());
+        std::printf("AAA neighbours: %s\n", genome.command(SIMILAR_CMD).c_str());
+    } catch (const wickra::GenomeError &err) {
+        // Every failure arrives here: a spec the core rejects, a command it does
+        // not know, a response that changed length between the two ABI calls.
+        std::fprintf(stderr, "%s\n", err.what());
         return 1;
     }
-    if (!run(genome, BUILD_CMD)) {
-        wickra_genome_free(genome);
-        return 1;
-    }
-    std::printf("wickra-genome %s\n", wickra_genome_version());
-    std::printf("AAA neighbours: ");
-    if (!run(genome, SIMILAR_CMD)) {
-        wickra_genome_free(genome);
-        return 1;
-    }
-    wickra_genome_free(genome);
     return 0;
 }
