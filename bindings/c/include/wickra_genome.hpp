@@ -11,15 +11,15 @@
 //
 //     #include <wickra_genome.hpp>
 //
-//     wickra::Genome handle(R"({"universe":["AAA"], ... })");
-//     std::string report = handle.command(R"({"cmd":"scan","data":{...}})");
+//     wickra::Genome genome(R"({"symbols":["AAA"],"features":[...]})");
+//     std::string report = genome.command(R"({"cmd":"similar","symbol":"AAA","k":3})");
 //
 // The genome is data-driven, so this wrapper deliberately stops at strings:
 // the spec and the report are JSON, and which JSON library a caller uses is
 // their choice, not this header's.
 
-#ifndef WICKRA_SCREENER_HPP
-#define WICKRA_SCREENER_HPP
+#ifndef WICKRA_GENOME_HPP
+#define WICKRA_GENOME_HPP
 
 #include <cstddef>
 #include <cstdint>
@@ -37,7 +37,7 @@ class GenomeError : public std::runtime_error {
   explicit GenomeError(const std::string& what) : std::runtime_error(what) {}
 };
 
-/// An owning handle to a genome built from a scan spec.
+/// An owning handle to a genome built from a spec.
 ///
 /// Move-only, because the underlying handle is a unique resource: copying it
 /// would free the same pointer twice.
@@ -114,4 +114,4 @@ class Genome {
 
 }  // namespace wickra
 
-#endif  // WICKRA_SCREENER_HPP
+#endif  // WICKRA_GENOME_HPP

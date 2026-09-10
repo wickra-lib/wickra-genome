@@ -9,7 +9,7 @@ labels: bug
 A clear description of what is wrong.
 
 **Reproduction**
-The smallest input that reproduces the problem — a `FeatureSpec` and a small
+The smallest input that reproduces the problem — a `GenomeSpec` and a small
 sample universe, or the exact `command` JSON.
 
 ```
