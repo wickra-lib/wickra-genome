@@ -16,7 +16,7 @@ workspace = true
 # Default features off; the `parallel` feature below re-enables rayon so the
 # default bench measures the parallel build path and `--no-default-features`
 # measures the single-threaded (WASM) path.
-genome-core = { path = "../genome-core", version = "0.1.0", default-features = false }
+wickra-genome-core = { path = "../genome-core", version = "0.1.0", default-features = false }
 
 [dev-dependencies]
 criterion = { workspace = true }
@@ -24,7 +24,7 @@ serde_json = { workspace = true }
 
 [features]
 default = ["parallel"]
-parallel = ["genome-core/parallel"]
+parallel = ["wickra-genome-core/parallel"]
 
 [[bench]]
 name = "genome"

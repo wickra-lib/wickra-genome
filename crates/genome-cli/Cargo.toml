@@ -1,5 +1,5 @@
 [package]
-name = "genome-cli"
+name = "wickra-genome"
 version.workspace = true
 edition.workspace = true
 rust-version.workspace = true
@@ -19,7 +19,7 @@ path = "src/main.rs"
 all-features = true
 
 [dependencies]
-genome-core = { workspace = true }
+wickra-genome-core = { workspace = true }
 clap = { workspace = true }
 serde_json = { workspace = true }
 

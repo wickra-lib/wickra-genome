@@ -20,7 +20,7 @@ The canonical spec and a larger universe are also in [`data/`](data/) for the
 CLI:
 
 ```bash
-cargo run -p genome-cli -- --spec examples/data/specs/dna.json \
+cargo run -p wickra-genome -- --spec examples/data/specs/dna.json \
   --data examples/data/universe --op similar --symbol AAA --k 3
 ```
 

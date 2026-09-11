@@ -13,5 +13,5 @@ name = "genome"
 path = "src/main.rs"
 
 [dependencies]
-genome-core = { path = "../../crates/genome-core", default-features = false }
+wickra-genome-core = { path = "../../crates/genome-core", default-features = false }
 serde_json = "1"

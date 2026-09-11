@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 /**
  * Streaming equals batch, driven through the JSON command boundary.
  *
- * <p>genome-core proves this in Rust, but that says nothing about the boundary
+ * <p>wickra-genome-core proves this in Rust, but that says nothing about the boundary
  * this binding crosses. Every other test here only ever sends {@code build}, so
  * {@code feed} was exercised in no language at all: a binding that mis-serialised
  * a candle on the feed path had no test to fail.

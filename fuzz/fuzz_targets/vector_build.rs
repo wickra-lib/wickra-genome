@@ -6,7 +6,7 @@
 
 use std::collections::BTreeMap;
 
-use genome_core::{build, Candle, GenomeSpec};
+use wickra_genome_core::{build, Candle, GenomeSpec};
 use libfuzzer_sys::fuzz_target;
 
 const SPEC: &str = r#"{"features":[{"kind":"price","field":"close"},

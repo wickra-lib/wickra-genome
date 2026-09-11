@@ -2,7 +2,7 @@
 
 // Streaming equals batch, through the WASM boundary.
 //
-// genome-core proves this in Rust, and the golden test here proves the WASM
+// wickra-genome-core proves this in Rust, and the golden test here proves the WASM
 // build reproduces a *batch* run byte-identically. Neither says anything about
 // `feed`: every other check only ever sends {"cmd":"build"}, so the streaming
 // path crossed this boundary untested.

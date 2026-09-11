@@ -6,8 +6,8 @@
 
 use std::collections::BTreeMap;
 
-use genome_core::{build, Candle, GenomeSpec, SymbolInput};
 use proptest::prelude::*;
+use wickra_genome_core::{build, Candle, GenomeSpec, SymbolInput};
 
 /// A spec over price-close and RSI(14), for `n` symbols with a fixed seed.
 fn spec_for(symbols: &[String], seed: u64) -> GenomeSpec {
@@ -47,7 +47,7 @@ fn universe(steps: &[Vec<f64>]) -> (Vec<String>, BTreeMap<String, SymbolInput>) 
     (symbols, data)
 }
 
-fn ready_count(genome: &mut genome_core::Genome, symbols: &[String]) -> usize {
+fn ready_count(genome: &mut wickra_genome_core::Genome, symbols: &[String]) -> usize {
     symbols
         .iter()
         .filter(|s| genome.vector(s).is_ok_and(|v| v.ready))

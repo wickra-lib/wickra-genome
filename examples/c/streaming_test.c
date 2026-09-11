@@ -1,6 +1,6 @@
 /* Streaming equals batch, through the C ABI's two-call idiom.
  *
- * genome-core proves this in Rust, but that says nothing about the boundary a C
+ * wickra-genome-core proves this in Rust, but that says nothing about the boundary a C
  * caller crosses. Every reach behind this ABI asks for the response length first
  * and reads it second, so a command that is not a pure function of its payload
  * runs twice per call — and `feed` is exactly that: it mutates the symbol's

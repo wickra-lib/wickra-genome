@@ -1,6 +1,6 @@
 //! The wickra-genome C ABI — the hub every C-capable language links against.
 //!
-//! The surface is tiny and JSON-shaped, exactly like [`genome_core::Genome`]:
+//! The surface is tiny and JSON-shaped, exactly like [`wickra_genome_core::Genome`]:
 //! construct a handle from a spec JSON, drive it with command JSONs (`set_spec`,
 //! `feed`, `build`, `vector`, `similar`, `cluster`, `anomaly`, `version`), read
 //! back response JSONs, and free the handle. No genome type crosses the boundary
@@ -18,7 +18,7 @@ use core::ffi::{c_char, CStr};
 use std::panic::{catch_unwind, AssertUnwindSafe};
 use std::ptr;
 
-use genome_core::Genome;
+use wickra_genome_core::Genome;
 
 /// A required pointer argument (`handle` or `cmd_json`) was null.
 pub const WICKRA_GENOME_ERR_NULL: i32 = -1;

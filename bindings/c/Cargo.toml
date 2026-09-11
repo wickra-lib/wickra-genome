@@ -29,4 +29,4 @@ missing_panics_doc = "allow"
 missing_errors_doc = "allow"
 
 [dependencies]
-genome-core = { workspace = true }
+wickra-genome-core = { workspace = true }

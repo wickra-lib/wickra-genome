@@ -9,6 +9,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Fixed
 
+- **The two published crates carried names the release could not upload.**
+  `genome-core` and `genome-cli` are outside the org's crates.io token scope,
+  which creates new crates under the `wickra-` prefix only; `cargo publish` on
+  either name returns 403 at upload while `--dry-run` passes, and because the
+  publish jobs run in parallel the release would have landed on PyPI, npm,
+  NuGet, Maven Central and the Go mirror without ever reaching crates.io.
+  `genome-cli` is also taken -- 0.2.1 belongs to an unrelated project -- and
+  `release.yml` already published `-p wickra-genome`, a package that did not
+  exist. The core is now `wickra-genome-core` and the CLI crate
+  `wickra-genome`, matching the binary it ships and the shape of every
+  released sibling. Directories keep their names; only the packages and the
+  `wickra_genome_core` path moved. The same audit ran across the family (xray
+  paid for this with its first tag).
+
 - **The napi bump split a crate in two and the build stopped.**
   `napi-derive-backend` 6.1.3 pulls `convert_case` 0.12 while `napi-derive`
   3.6.3 still uses 0.11, and two versions of a crate are two unrelated types --
@@ -128,10 +142,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   project name from another repository; `pip` did not cover
   `/.github/requirements` and `npm` did not cover `/examples/node`.
 
-- **The workspace's own core was pinned as a range.** `genome-core` was named
+- **The workspace's own core was pinned as a range.** `wickra-genome-core` was named
   six times as `version = "0.1"` -- a caret range -- and the root manifest
   carried no `[workspace.dependencies]` entry for it at all. A published
-  `genome-cli` 0.1.0 would have accepted `genome-core` 0.1.99, a crate resolving
+  `wickra-genome` 0.1.0 would have accepted `wickra-genome-core` 0.1.99, a crate resolving
   against a core it was never built against, in a workspace whose whole point is
   that the pieces move together. It also hid the line from `bump_version.py` and
   `check_version_sync.py`, both of which look for the exact version.
@@ -241,11 +255,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Repository scaffold: governance, supply-chain configuration (`deny.toml`,
   `lychee.toml`, `osv-scanner.toml`, `repo-metadata.toml`), the Rust workspace
-  (`genome-core`, `genome-cli`, `genome-bench`) with the language-binding crates,
+  (`wickra-genome-core`, `wickra-genome`, `genome-bench`) with the language-binding crates,
   and the `wickra-core` / `wickra-data` dependencies (the streaming indicators
   that build every asset's vector) plus the `wickra-exchange` git dependency (a
   live market feed, behind the `live` feature).
-- `genome-core`: the market-genome vector engine. A data-driven `GenomeSpec`
+- `wickra-genome-core`: the market-genome vector engine. A data-driven `GenomeSpec`
   (feature axes, cross-section normalization, distance metric) turns each symbol
   into a live feature vector over the `wickra-core` streaming indicators, resolved
   by name through the `wickra-backtest-core` registry factory. Four queries run

@@ -1,1 +1,1 @@
-pub use genome_core::version;
+pub use wickra_genome_core::version;

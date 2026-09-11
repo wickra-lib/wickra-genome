@@ -11,7 +11,7 @@ Related: [FEATURES.md](FEATURES.md) names a feature axis and its parameters;
 
 ## The seven feed families
 
-`genome_core::feed_kind(name)` reports which family an indicator belongs to.
+`wickra_genome_core::feed_kind(name)` reports which family an indicator belongs to.
 
 | Family | What the indicator is given besides the bar | Example |
 | --- | --- | --- |

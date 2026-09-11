@@ -764,33 +764,8 @@ name = "genome-bench"
 version = "0.1.0"
 dependencies = [
  "codspeed-criterion-compat",
- "genome-core",
  "serde_json",
-]
-
-[[package]]
-name = "genome-cli"
-version = "0.1.0"
-dependencies = [
- "clap",
- "genome-core",
- "serde_json",
-]
-
-[[package]]
-name = "genome-core"
-version = "0.1.0"
-dependencies = [
- "proptest",
- "rayon",
- "serde",
- "serde_json",
- "thiserror",
- "toml",
- "wickra-backtest-core",
- "wickra-core",
- "wickra-data",
- "wickra-exchange",
+ "wickra-genome-core",
 ]
 
 [[package]]
@@ -2759,36 +2734,61 @@ dependencies = [
 ]
 
 [[package]]
+name = "wickra-genome"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "serde_json",
+ "wickra-genome-core",
+]
+
+[[package]]
 name = "wickra-genome-c"
 version = "0.1.0"
 dependencies = [
- "genome-core",
+ "wickra-genome-core",
+]
+
+[[package]]
+name = "wickra-genome-core"
+version = "0.1.0"
+dependencies = [
+ "proptest",
+ "rayon",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "toml",
+ "wickra-backtest-core",
+ "wickra-core",
+ "wickra-data",
+ "wickra-exchange",
 ]
 
 [[package]]
 name = "wickra-genome-node"
 version = "0.1.0"
 dependencies = [
- "genome-core",
  "napi",
  "napi-build",
  "napi-derive",
+ "wickra-genome-core",
 ]
 
 [[package]]
 name = "wickra-genome-python"
 version = "0.1.0"
 dependencies = [
- "genome-core",
  "pyo3",
+ "wickra-genome-core",
 ]
 
 [[package]]
 name = "wickra-genome-wasm"
 version = "0.1.0"
 dependencies = [
- "genome-core",
  "wasm-bindgen",
+ "wickra-genome-core",
 ]
 
 [[package]]

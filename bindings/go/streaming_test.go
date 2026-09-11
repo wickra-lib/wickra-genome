@@ -2,7 +2,7 @@ package wickra
 
 // Streaming equals batch, driven through the JSON command boundary.
 //
-// genome-core proves this in Rust, but that says nothing about the boundary this
+// wickra-genome-core proves this in Rust, but that says nothing about the boundary this
 // binding crosses. Every other test here only ever sends {"cmd":"build"}, so
 // `feed` was exercised in no language at all: a binding that mis-serialised a
 // candle on the feed path had no test to fail.

@@ -1,6 +1,6 @@
 # Architecture
 
-Wickra Genome is one Rust core, `genome-core`, exposed everywhere through a single
+Wickra Genome is one Rust core, `wickra-genome-core`, exposed everywhere through a single
 JSON string boundary. Every language binding is a thin shim over the same core, so
 there is exactly one implementation of the maths and one source of determinism.
 

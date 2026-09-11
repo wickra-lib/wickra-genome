@@ -5,7 +5,9 @@
 
 use std::collections::BTreeMap;
 
-use genome_core::{build, Candle, Feature, GenomeSpec, Metric, Normalize, PriceField, SymbolInput};
+use wickra_genome_core::{
+    build, Candle, Feature, GenomeSpec, Metric, Normalize, PriceField, SymbolInput,
+};
 
 fn json_round_trip<T>(value: &T)
 where

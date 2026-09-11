@@ -1,6 +1,6 @@
 """Streaming equals batch, driven through the JSON command boundary.
 
-``genome-core`` proves this in Rust
+``wickra-genome-core`` proves this in Rust
 (``crates/genome-core/tests/streaming_eq_batch.rs``), but that says nothing about
 the boundary each language actually crosses. A binding reaches the core through
 ``command``, and every other test here only ever sends ``{"cmd":"build"}`` — so

@@ -7,8 +7,8 @@ vector space.
 
 | Crate          | Role |
 |----------------|------|
-| `genome-core`  | The library: the feature-vector builder, the vector space, and similarity / clustering / anomaly queries, exposed over the `command_json` boundary. |
-| `genome-cli`   | `wickra-genome`, the reference CLI. |
+| `wickra-genome-core`  | The library: the feature-vector builder, the vector space, and similarity / clustering / anomaly queries, exposed over the `command_json` boundary. |
+| `wickra-genome`   | `wickra-genome`, the reference CLI. |
 | `genome-bench` | Criterion benchmarks. |
 | `bindings/*`   | The ten language bindings (Python, Node.js, WASM native; C, C++, C#, Go, Java, R over the C ABI hub). |
 
@@ -19,7 +19,7 @@ the dimension, and each axis is one of the 497 indicators the shared registry
 resolves by name, evaluated on the asset's candles at `O(1)` per bar. That is the
 same registry the rest of the Wickra ecosystem uses, so a coordinate means exactly
 what it means everywhere else. Over the cross-section of embedded assets,
-`genome-core` answers three questions:
+`wickra-genome-core` answers three questions:
 
 - **Similarity** — nearest neighbours to a query asset under a chosen metric.
 - **Clustering** — a deterministic k-means partition of the market into regimes.

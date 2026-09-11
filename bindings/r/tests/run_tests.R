@@ -49,7 +49,7 @@ stopifnot(inherits(err, "error"))
 
 ## Streaming equals batch, through the same command boundary.
 ##
-## genome-core proves this in Rust, but that says nothing about the boundary this
+## wickra-genome-core proves this in Rust, but that says nothing about the boundary this
 ## binding crosses: every check above only ever sends {"cmd":"build"}, so `feed`
 ## was exercised in no language at all. The ramp below is chosen so a candle
 ## applied twice would change Sma(3), which is what tells the two paths apart.

@@ -36,7 +36,7 @@ feature vector, one coordinate per `wickra-core` streaming indicator, and lets y
 query the whole market by it: **find every asset behaving like X right now**,
 cluster the market into regimes, or flag the assets whose DNA has gone anomalous.
 
-Genome is one data-driven core, `genome-core`: it builds each asset's vector from
+Genome is one data-driven core, `wickra-genome-core`: it builds each asset's vector from
 the same `wickra-core` indicators the rest of the ecosystem uses, then runs
 similarity search, seeded k-means clustering and anomaly scoring over the
 cross-section. The core is exposed as a **JSON-over-C-ABI data API**
@@ -59,7 +59,7 @@ plus a reference CLI.
 - **Side feeds** — an axis whose indicator reads a reference series, a derivatives tick, an order book, the bar's trades or the market cross-section gets it, or the spec is refused by name.
 
 ```rust
-use genome_core::{build, GenomeSpec, SymbolInput};
+use wickra_genome_core::{build, GenomeSpec, SymbolInput};
 use std::collections::BTreeMap;
 
 let spec = GenomeSpec::from_json(r#"{
@@ -110,7 +110,7 @@ language binding return byte-identical answers.
 The CLI over a spec and a directory of per-symbol CSVs:
 
 ```bash
-cargo run -p genome-cli -- \
+cargo run -p wickra-genome -- \
   --spec examples/data/specs/dna.json \
   --data examples/data/universe \
   --op similar --symbol AAA --k 3
@@ -119,7 +119,7 @@ cargo run -p genome-cli -- \
 From Rust:
 
 ```rust
-use genome_core::Genome;
+use wickra_genome_core::Genome;
 
 let mut g = Genome::new(
     r#"{"features":[{"kind":"price","field":"close"}],
