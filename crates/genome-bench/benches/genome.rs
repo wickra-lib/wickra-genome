@@ -10,7 +10,7 @@
 use std::collections::BTreeMap;
 
 use criterion::{criterion_group, criterion_main, BenchmarkId, Criterion, Throughput};
-use genome_core::{build, Candle, GenomeSpec, SymbolInput};
+use wickra_genome_core::{build, Candle, GenomeSpec, SymbolInput};
 
 const BARS: usize = 64;
 

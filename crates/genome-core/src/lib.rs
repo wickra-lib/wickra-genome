@@ -17,7 +17,7 @@
 //! PRNG for k-means, and fixed `1e-8` output rounding.
 //!
 //! ```
-//! use genome_core::Genome;
+//! use wickra_genome_core::Genome;
 //! let spec = r#"{"features":[{"kind":"price","field":"close"}],
 //!                "symbols":["AAA","BBB"],"metric":"euclid"}"#;
 //! let mut g = Genome::new(spec).unwrap();

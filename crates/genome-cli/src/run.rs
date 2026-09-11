@@ -1,15 +1,15 @@
 //! Load the spec and universe, run the query, and render the answer.
 
 use crate::args::{Args, Format, Op};
-use genome_core::{
-    build, Candle, Cluster, Config, Genome, GenomeSpec, Neighbor, SymbolInput, Vector,
-};
 use serde_json::json;
 use std::collections::BTreeMap;
 use std::fmt::Write as _;
 use std::fs;
 use std::io::Read;
 use std::path::Path;
+use wickra_genome_core::{
+    build, Candle, Cluster, Config, Genome, GenomeSpec, Neighbor, SymbolInput, Vector,
+};
 
 /// Load the inputs, run the query and return the rendered output.
 pub fn run(args: &Args) -> Result<String, String> {
@@ -230,7 +230,7 @@ fn render_clusters(clusters: &[Cluster]) -> String {
 }
 
 /// Render the anomaly scores (already sorted, biggest outlier first).
-fn render_anomalies(anomalies: &[genome_core::Anomaly]) -> String {
+fn render_anomalies(anomalies: &[wickra_genome_core::Anomaly]) -> String {
     if anomalies.is_empty() {
         return "no anomalies (empty ready universe)\n".to_string();
     }

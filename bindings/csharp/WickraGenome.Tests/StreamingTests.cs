@@ -9,7 +9,7 @@ namespace WickraGenome.Tests;
 /// <summary>
 /// Streaming equals batch, driven through the JSON command boundary.
 ///
-/// genome-core proves this in Rust, but that says nothing about the boundary
+/// wickra-genome-core proves this in Rust, but that says nothing about the boundary
 /// this binding crosses. Every other test here only ever sends
 /// <c>{"cmd":"build"}</c>, so <c>feed</c> was exercised in no language at all: a
 /// binding that mis-serialised a candle on the feed path had no test to fail.

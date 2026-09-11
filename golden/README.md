@@ -70,7 +70,7 @@ intentional change to the feature pipeline, metric, or response shape, and revie
 the diff):
 
 ```bash
-cargo build -p genome-cli --release
+cargo build -p wickra-genome --release
 BIN=target/release/wickra-genome
 for spec in dna cosine_dna minmax_dna cluster5 anomaly; do
   ck=3; [ "$spec" = "cluster5" ] && ck=5

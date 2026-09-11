@@ -13,7 +13,7 @@
 use pyo3::exceptions::PyValueError;
 use pyo3::prelude::*;
 
-use genome_core::Genome;
+use wickra_genome_core::Genome;
 
 /// A market genome driven by JSON commands.
 ///
@@ -44,7 +44,7 @@ impl PyGenome {
     /// The library version.
     #[staticmethod]
     fn version() -> &'static str {
-        genome_core::version()
+        wickra_genome_core::version()
     }
 }
 

@@ -22,7 +22,7 @@ This is pinned by the `streaming_eq_batch` test: for `vector`, `similar`,
 string.
 
 ```rust
-use genome_core::{build, Genome};
+use wickra_genome_core::{build, Genome};
 
 // batch
 let mut batch = build(&data, &spec)?;

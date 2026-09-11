@@ -7,7 +7,7 @@
 //! cargo run --manifest-path examples/rust/Cargo.toml
 //! ```
 
-use genome_core::Genome;
+use wickra_genome_core::Genome;
 use serde_json::Value;
 
 // A price-close genome over three symbols: AAA and BBB sit close together, CCC is

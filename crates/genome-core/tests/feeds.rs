@@ -14,9 +14,9 @@
 
 use std::collections::BTreeMap;
 
-use genome_core::{build_series, Candle, Error, GenomeSpec, SymbolSeries};
 use wickra_backtest_core::{CrossSection, CrossSectionMember, DerivativesTick, Level, OrderBook};
 use wickra_backtest_core::{TradePrint, TradeSide};
+use wickra_genome_core::{build_series, Candle, Error, GenomeSpec, SymbolSeries};
 
 const SYMBOL: &str = "AAA";
 const BARS: usize = 120;

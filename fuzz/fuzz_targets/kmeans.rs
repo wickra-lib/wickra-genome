@@ -5,7 +5,7 @@
 
 use std::collections::BTreeMap;
 
-use genome_core::{build, Candle, GenomeSpec};
+use wickra_genome_core::{build, Candle, GenomeSpec};
 use libfuzzer_sys::fuzz_target;
 
 fn universe() -> BTreeMap<String, Vec<Candle>> {

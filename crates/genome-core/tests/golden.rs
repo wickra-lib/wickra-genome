@@ -11,7 +11,7 @@ use std::collections::BTreeMap;
 use std::fs;
 use std::path::PathBuf;
 
-use genome_core::{build, Candle, GenomeSpec, SymbolInput};
+use wickra_genome_core::{build, Candle, GenomeSpec, SymbolInput};
 
 fn golden_dir() -> PathBuf {
     PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../golden")

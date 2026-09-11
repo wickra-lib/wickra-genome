@@ -13,7 +13,7 @@
 
 use wasm_bindgen::prelude::*;
 
-use genome_core::Genome as CoreGenome;
+use wickra_genome_core::Genome as CoreGenome;
 
 /// A market genome driven by JSON commands.
 #[wasm_bindgen]
@@ -41,12 +41,12 @@ impl Genome {
     /// The library version.
     #[wasm_bindgen(js_name = version)]
     pub fn instance_version(&self) -> String {
-        genome_core::version().to_string()
+        wickra_genome_core::version().to_string()
     }
 }
 
 /// The library version.
 #[wasm_bindgen]
 pub fn version() -> String {
-    genome_core::version().to_string()
+    wickra_genome_core::version().to_string()
 }

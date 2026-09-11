@@ -2,7 +2,7 @@
 //!
 //! Loads a `GenomeSpec` and a universe of candles (a directory of `<SYMBOL>.csv`
 //! files or a JSON dataset on stdin), builds the market genome through
-//! `genome-core`, runs one query (`vector`, `similar`, `cluster` or `anomaly`)
+//! `wickra-genome-core`, runs one query (`vector`, `similar`, `cluster` or `anomaly`)
 //! and prints the answer as text or as the raw `command_json` response.
 
 mod args;

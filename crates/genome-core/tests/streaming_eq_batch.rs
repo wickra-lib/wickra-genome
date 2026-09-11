@@ -5,7 +5,7 @@
 
 use std::collections::BTreeMap;
 
-use genome_core::{build, Candle, Genome, GenomeSpec, SymbolInput};
+use wickra_genome_core::{build, Candle, Genome, GenomeSpec, SymbolInput};
 
 fn spec() -> GenomeSpec {
     serde_json::from_str(

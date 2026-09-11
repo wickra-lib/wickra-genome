@@ -4,7 +4,7 @@
 //! an unknown symbol comes back in-band as `{"ok":false,...}` / an error object,
 //! never a panic.
 
-use genome_core::Genome;
+use wickra_genome_core::Genome;
 use libfuzzer_sys::fuzz_target;
 
 const SPEC: &str = r#"{"features":[{"kind":"price","field":"close"},
