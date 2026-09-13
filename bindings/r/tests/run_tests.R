@@ -118,7 +118,9 @@ for (query in c(
 ## Sma(3) over 10, 20, 30 is 20; fed twice each it would be the mean of 20,
 ## 30, 30 instead, so this value is what tells the two apart.
 vector_out <- wkgenome_command(batch_handle, '{"cmd":"vector","symbol":"AAA"}')
-stopifnot(grepl('"values":[20,', vector_out, fixed = TRUE))
+## The envelope prints floats with their fraction (`20.0`), so the match is on
+## the canonical bytes.
+stopifnot(grepl('"values":[20.0,', vector_out, fixed = TRUE))
 
 ## reset returns the genome to its pre-feed state
 reset_handle <- wkgenome_new(stream_spec)
