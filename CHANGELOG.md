@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-09-14
+
 ### Fixed
 
 - **The R package installs on macOS and Windows.** r-universe built the
@@ -352,5 +354,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation: `README`, `docs/{ARCHITECTURE,FEATURES,NORMALIZATION,METRICS,CLUSTERING,STREAMING,Cookbook}.md`,
   and measured `BENCHMARKS.md` figures.
 
-[Unreleased]: https://github.com/wickra-lib/wickra-genome/compare/v0.1.0...HEAD
+[Unreleased]: https://github.com/wickra-lib/wickra-genome/compare/v0.1.1...HEAD
+[0.1.1]: https://github.com/wickra-lib/wickra-genome/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/wickra-lib/wickra-genome/releases/tag/v0.1.0
