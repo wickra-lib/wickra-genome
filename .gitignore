@@ -26,3 +26,10 @@ examples/java/target/
 examples/csharp/**/bin/
 examples/csharp/**/obj/
 /.venv/
+# Staged into src/ by configure at build time; never committed.
+bindings/r/src/wickra_genome.h
+bindings/r/src/libwickra_genome*
+bindings/r/src/wickra_genome_abi.def
+bindings/r/src/wickra-genome-c*
+bindings/r/src/Makevars
+bindings/r/src/symbols.rds
