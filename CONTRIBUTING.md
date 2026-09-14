@@ -55,7 +55,7 @@ kind (`forward_return` / `triple_barrier`) is added to
 a serde round-trip test and a golden fixture. Indicators themselves come from the
 [Wickra](https://github.com/wickra-lib/wickra) core registry by name and
 parameters — no indicator code lives here. See
-[docs/FEATURES.md](docs/FEATURES.md) and [docs/LABELS.md](docs/LABELS.md).
+[docs/FEATURES.md](docs/FEATURES.md) and [docs/NORMALIZATION.md](docs/NORMALIZATION.md).
 
 ## Developer Certificate of Origin
 

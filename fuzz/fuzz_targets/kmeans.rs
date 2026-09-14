@@ -5,10 +5,10 @@
 
 use std::collections::BTreeMap;
 
-use wickra_genome_core::{build, Candle, GenomeSpec};
+use wickra_genome_core::{build, Candle, GenomeSpec, SymbolInput};
 use libfuzzer_sys::fuzz_target;
 
-fn universe() -> BTreeMap<String, Vec<Candle>> {
+fn universe() -> BTreeMap<String, SymbolInput> {
     let mut data = BTreeMap::new();
     for (idx, sym) in ["AAA", "BBB", "CCC", "DDD", "EEE"].iter().enumerate() {
         let base = 100.0 + idx as f64 * 4.0;
@@ -26,7 +26,7 @@ fn universe() -> BTreeMap<String, Vec<Candle>> {
             });
             prev = close;
         }
-        data.insert((*sym).to_string(), candles);
+        data.insert((*sym).to_string(), SymbolInput::from(candles));
     }
     data
 }
