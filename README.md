@@ -50,9 +50,9 @@ plus a reference CLI.
 > [wickra-verify](https://github.com/wickra-lib/wickra-verify) and 20 more — see
 > [the full list](https://github.com/wickra-lib).
 
-> **Status:** 0.1.0, unreleased. The vector engine, the reference CLI, all ten
-> language bindings, the golden corpus, the test/fuzz/bench surface and CI are in
-> place and green; the first tagged release publishes to the registries.
+> **Status:** 0.1.0, the first published release. The vector engine, the
+> reference CLI, all ten language bindings, the golden corpus, the
+> test/fuzz/bench surface and CI are in place and green.
 
 - **Batch** — `build(data, spec)` folds every symbol's whole history into a vector.
 - **Streaming** — `feed(symbol, candle)`, O(1) per tick, over the state so far.

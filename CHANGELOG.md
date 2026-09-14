@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-09-14
+
 ### Fixed
 
 - **CI is green again.** The R test matched `"values":[20,` against an
@@ -336,4 +338,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation: `README`, `docs/{ARCHITECTURE,FEATURES,NORMALIZATION,METRICS,CLUSTERING,STREAMING,Cookbook}.md`,
   and measured `BENCHMARKS.md` figures.
 
-[Unreleased]: https://github.com/wickra-lib/wickra-genome/commits/main
+[Unreleased]: https://github.com/wickra-lib/wickra-genome/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/wickra-lib/wickra-genome/releases/tag/v0.1.0
