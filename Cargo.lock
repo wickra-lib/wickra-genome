@@ -2766,6 +2766,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "wickra-genome-example"
+version = "0.1.0"
+dependencies = [
+ "serde_json",
+ "wickra-genome-core",
+]
+
+[[package]]
 name = "wickra-genome-node"
 version = "0.1.0"
 dependencies = [
