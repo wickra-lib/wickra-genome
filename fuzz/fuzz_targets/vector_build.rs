@@ -6,7 +6,7 @@
 
 use std::collections::BTreeMap;
 
-use wickra_genome_core::{build, Candle, GenomeSpec};
+use wickra_genome_core::{build, Candle, GenomeSpec, SymbolInput};
 use libfuzzer_sys::fuzz_target;
 
 const SPEC: &str = r#"{"features":[{"kind":"price","field":"close"},
@@ -47,6 +47,10 @@ fuzz_target!(|data: &[u8]| {
         time[s] += 3600;
     }
 
+    let universe: BTreeMap<String, SymbolInput> = universe
+        .into_iter()
+        .map(|(sym, candles)| (sym, SymbolInput::from(candles)))
+        .collect();
     let Ok(mut genome) = build(&universe, &spec) else {
         return;
     };
