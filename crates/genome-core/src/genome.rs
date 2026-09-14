@@ -348,7 +348,8 @@ mod tests {
     fn version_command() {
         let mut g = Genome::new(spec_json()).unwrap();
         let out = g.command_json(r#"{"cmd":"version"}"#);
-        assert_eq!(out, r#"{"version":"0.1.0"}"#);
+        let expected = format!(r#"{{"version":"{}"}}"#, env!("CARGO_PKG_VERSION"));
+        assert_eq!(out, expected);
     }
 
     #[test]
