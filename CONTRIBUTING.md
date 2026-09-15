@@ -46,16 +46,22 @@ byte-identical matrix either way.
 - **Production code only** — no mocks outside `#[cfg(test)]`, no TODO stubs, and
   no defensive branches that can never run (they fail coverage).
 
-## Adding a feature or a label
+## Adding a feature kind, a normalization or a metric
 
 The spec is a serde struct, so extending it means adding a variant, not a
-closure. A new feature kind (`indicator` / `price` / `microstructure`) or label
-kind (`forward_return` / `triple_barrier`) is added to
-`crates/genome-core/src/spec.rs` and handled in the per-symbol fold, with
-a serde round-trip test and a golden fixture. Indicators themselves come from the
+closure. A new **feature kind** (today `indicator` and `price`) is a variant of
+`Feature` in `crates/genome-core/src/feature.rs`, read off the per-symbol
+state so every symbol's vector keeps the same axis order. A new
+**normalization** is a variant of `Normalize` in
+`crates/genome-core/src/spec.rs`, implemented in `normalize.rs`; a new
+**distance metric** is a variant of `Metric`, implemented in `metric.rs`. Each
+comes with a serde round-trip test and a golden fixture, since the clustering
+has to stay reproducible from its seed. Indicators themselves come from the
 [Wickra](https://github.com/wickra-lib/wickra) core registry by name and
 parameters — no indicator code lives here. See
-[docs/FEATURES.md](docs/FEATURES.md) and [docs/NORMALIZATION.md](docs/NORMALIZATION.md).
+[docs/FEATURES.md](docs/FEATURES.md),
+[docs/NORMALIZATION.md](docs/NORMALIZATION.md) and
+[docs/METRICS.md](docs/METRICS.md).
 
 ## Developer Certificate of Origin
 
