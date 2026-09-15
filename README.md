@@ -227,7 +227,7 @@ the ten surfaces stayed in step.
 - **Node 22+** — the Node binding.
 - **Go 1.23+** — the Go binding.
 - **Java 22+** — the Java binding.
-- **R 2.10+** — the R package.
+- **R 4.1+** — the R package.
 
 Genome depends on `wickra-core` and `wickra-data` for the indicators and the
 candle reader, resolves indicators through `wickra-backtest-core`, and — behind
