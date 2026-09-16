@@ -1,44 +1,43 @@
-# wickra-genome WASM examples
+# Wickra Genome WASM examples
 
-Browser demos for the `wickra-genome-wasm` binding.
-
-The WASM build carries the whole vector engine with `--no-default-features`: no
-rayon, so the per-symbol fold is sequential rather than parallel — and
-byte-for-byte identical to the parallel one, which is what the golden fixtures
-pin down. A spec is data, not code, so the spec bytes on this page are the same
-ones `examples/node/genome.js` sends.
+Browser demos for the [Wickra Genome WASM binding](../../bindings/wasm): an HTML page whose module script
+loads the package the same way (`init()`, then construct), builds the same
+object every other binding builds and prints the same output into the page, so
+the pattern transfers one-to-one to your own page.
 
 ## Build
 
-The module ships as a `wasm-pack` `--target web` bundle. Build it once from the
-repository root:
+The WASM module ships as a `wasm-pack` `--target web` bundle. Build it once from
+the repository root:
 
 ```bash
-wasm-pack build bindings/wasm --target web --release
+wasm-pack build bindings/wasm --target web
 ```
 
-That writes `bindings/wasm/pkg/` with the `.wasm` binary, the JS loader and the
-type declarations the page imports.
+## Serve
 
-## Run
-
-The page loads its module over `http://`, not `file://`, because ES module
-imports and `WebAssembly.instantiateStreaming` both need a real origin. Serve the
-repository root:
+ES modules and `fetch()` both need a real HTTP origin, not `file://`. Any static
+server from the repository root works:
 
 ```bash
+# Python:
 python -m http.server 8000
+
+# Or Node:
+npx http-server -p 8000
 ```
 
-Then open `http://localhost:8000/examples/wasm/genome.html`.
+Then open the demo at `http://localhost:8000/examples/wasm/<file>`. CI cannot open
+a browser; it extracts the `<script type="module">` and parses it with
+`node --check`, so a broken edit fails there rather than in a reader's tab.
 
-## Pages
+## Demos
 
-| Page | What it does |
-|------|--------------|
-| `genome.html` | Builds a genome over the shared three-symbol universe (`AAA` at 1, `BBB` at 2, `CCC` at 100), then renders `AAA`'s nearest neighbours and the anomaly ranking, plus the raw JSON. The page counterpart of `examples/node/genome.js`. |
+| Demo | What it shows |
+|------|---------------|
+| `genome.html` | A runnable example against this binding. |
 
 ## See also
 
-- [examples/README.md](../README.md) — the same query in every other language.
-- [bindings/wasm/README.md](../../bindings/wasm/README.md) — the binding itself.
+- [`bindings/wasm/README.md`](../../bindings/wasm/README.md) — install, quick start and the API of the package.
+- [`examples/README.md`](../README.md) — the same example in every other language.

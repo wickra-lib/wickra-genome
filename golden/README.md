@@ -1,4 +1,4 @@
-# Golden corpus
+# Golden fixtures
 
 The generate-once / replay-everywhere fixtures that pin Wickra Genome's
 determinism: for every `specs/<name>.json` run against the shared `data/`

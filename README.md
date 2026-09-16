@@ -19,12 +19,10 @@
 [![OpenSSF Scorecard](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-genome/scorecard.svg)](https://scorecard.dev/viewer/?uri=github.com/wickra-lib/wickra-genome)
 [![OpenSSF Best Practices](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-genome/best-practices.svg)](https://www.bestpractices.dev)
 [![Build provenance](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-genome/provenance.svg)](https://github.com/wickra-lib/wickra-genome/attestations)
-[![Docs](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-genome/docs.svg)](https://wickra.org)
+[![Docs](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-genome/docs.svg)](https://genome.wickra.org)
 [![Verified across 10 languages](https://raw.githubusercontent.com/wickra-lib/.github/main/profile/badges/wickra-genome/verified.svg)](golden/)
 
 ---
-
-# Wickra Genome
 
 **A vector database of the whole market: every asset as a live feature vector
 over the streaming indicators. Similarity search, clustering and anomaly
@@ -43,7 +41,7 @@ cross-section. The core is exposed as a **JSON-over-C-ABI data API**
 (`command_json`) in **Rust, Python, Node.js, WASM, C, C++, C#, Go, Java and R**,
 plus a reference CLI.
 
-> **Part of the [Wickra ecosystem](https://github.com/wickra-lib):** the same
+**Part of the [Wickra ecosystem](#ecosystem):** the same
 > data-driven core and ten-language binding surface also power
 > [wickra-backtest](https://github.com/wickra-lib/wickra-backtest),
 > [wickra-proof](https://github.com/wickra-lib/wickra-proof),
@@ -75,6 +73,14 @@ data.insert("AAA".into(), candles.into());
 let genome = build(&data, &spec)?;
 println!("{:?}", genome.similar("AAA", 5)?);
 ```
+
+## Status
+
+**0.1.1 — the current release.** The core, the CLI, all ten language bindings,
+the byte-exact golden corpus, property + fuzz tests, benchmarks and one runnable
+example per language are in place and green across the full CI matrix (10
+languages × 3 OS). [ROADMAP.md](ROADMAP.md) has what is done, what is open and
+what is not planned.
 
 ## Documentation
 
@@ -239,15 +245,6 @@ from crates.io.
 See [BENCHMARKS.md](BENCHMARKS.md). Reproduce with `cargo bench -p genome-bench`
 (and `--no-default-features` for the single-threaded path).
 
-## Security
-
-See [SECURITY.md](SECURITY.md) and [THREAT_MODEL.md](THREAT_MODEL.md). Genome reads
-recorded market data and specs only — no keys, no order placement.
-
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md).
-
 ## Ecosystem
 
 Part of the [Wickra](https://github.com/wickra-lib/wickra) family — each one a
@@ -283,14 +280,31 @@ with the in-browser demo and the benchmark figures, is at
 reference is at [docs.wickra.org](https://docs.wickra.org) and the org landing
 page at [wickra.org](https://wickra.org).
 
+## Contributing
+
+See [CONTRIBUTING.md](CONTRIBUTING.md).
+
+## Security
+
+See [SECURITY.md](SECURITY.md) and [THREAT_MODEL.md](THREAT_MODEL.md). Genome reads
+recorded market data and specs only — no keys, no order placement.
+
 ## License
 
-Dual-licensed under either of
+Licensed under either of
 
-- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE))
-- MIT license ([LICENSE-MIT](LICENSE-MIT))
+- Apache License, Version 2.0 ([LICENSE-APACHE](LICENSE-APACHE) or
+  <http://www.apache.org/licenses/LICENSE-2.0>)
+- MIT license ([LICENSE-MIT](LICENSE-MIT) or <http://opensource.org/licenses/MIT>)
 
-at your option.
+at your option. Use it, fork it, modify it, redistribute it — commercially or
+not — file issues, send pull requests; all welcome.
+
+### Contribution
+
+Unless you explicitly state otherwise, any contribution intentionally submitted
+for inclusion in the work by you, as defined in the Apache-2.0 license, shall be
+dual licensed as above, without any additional terms or conditions.
 
 ## Disclaimer
 
