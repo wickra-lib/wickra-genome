@@ -36,7 +36,7 @@ The output lands in `pkg/`.
 ## Quick start
 
 ```js
-import init, { Genome } from "./pkg/wickra_genome_wasm.js";
+import init, { Genome } from "wickra-genome-wasm";
 
 await init();
 

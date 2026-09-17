@@ -63,7 +63,7 @@ must reproduce these files exactly.
 - **Output rounding** is `round_to(1e-8)`; the parallel (native) and serial
   (wasm) paths agree byte-for-byte.
 
-## Bless command
+## Blessing
 
 Regenerate every `expected/**/*.json` from the current core (run after any
 intentional change to the feature pipeline, metric, or response shape, and review
