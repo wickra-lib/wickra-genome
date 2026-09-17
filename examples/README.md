@@ -4,6 +4,18 @@ Runnable examples in every Wickra Genome language. Each one builds a genome over
 the same tiny three-symbol universe — `AAA` and `BBB` close together, `CCC` far
 away — and prints the same summary:
 
+## What every example prints
+
+Runnable examples in every Wickra Genome language. Each one builds a genome over
+the same tiny three-symbol universe — `AAA` and `BBB` close together, `CCC` far
+away — and prints the same summary:
+
+```
+wickra-genome 0.1.1
+AAA nearest: BBB
+top anomaly: CCC
+```
+
 ## Rust — `examples/rust/`
 
 As the CI examples job runs it, from the repository root:
