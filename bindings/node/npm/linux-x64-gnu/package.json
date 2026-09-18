@@ -1,6 +1,6 @@
 {
   "name": "wickra-genome-linux-x64-gnu",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Native binding for wickra-genome (Linux x64 GNU). Installed automatically as an optional dependency of wickra-genome on matching platforms.",
   "main": "wickra-genome.linux-x64-gnu.node",
   "files": [
