@@ -1,6 +1,6 @@
 {
   "name": "wickra-genome-darwin-x64",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Native binding for wickra-genome (macOS x64). Installed automatically as an optional dependency of wickra-genome on matching platforms.",
   "main": "wickra-genome.darwin-x64.node",
   "files": [
