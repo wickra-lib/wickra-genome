@@ -9,8 +9,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.3] - 2026-09-23
 
-A maintenance release: the strategy genome and its bindings are unchanged. It
-publishes the refreshed dependency tree and toolchain pins.
+A maintenance release: the market vector database and its bindings are
+unchanged. It publishes the refreshed dependency tree and toolchain pins.
 
 ### Added
 
