@@ -207,6 +207,6 @@ mod tests {
 
     #[test]
     fn empty_rows_empty_result() {
-        assert!(kmeans(&[], 2, Metric::Euclid, 1).is_empty());
+        assert_eq!(kmeans(&[], 2, Metric::Euclid, 1), Vec::new());
     }
 }
