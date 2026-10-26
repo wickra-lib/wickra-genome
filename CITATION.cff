@@ -4,7 +4,7 @@ title: "wickra-genome"
 abstract: >-
   A vector database of the whole market built on the Wickra core: every asset
   is embedded as a live feature vector whose axes a data-driven GenomeSpec
-  names, drawn from the 497 O(1) streaming indicators the shared registry
+  names, drawn from the 495 O(1) streaming indicators the shared registry
   resolves by name. Over the cross-section of embedded assets it answers
   similarity (k nearest neighbours), clustering (seeded k-means) and anomaly
   (nearest-neighbour outlier scores), exposed as a JSON-over-C-ABI data API in
