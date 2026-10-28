@@ -11,7 +11,7 @@ the same tiny three-symbol universe — `AAA` and `BBB` close together, `CCC` fa
 away — and prints the same summary:
 
 ```
-wickra-genome 0.2.0
+wickra-genome 0.2.1
 AAA nearest: BBB
 top anomaly: CCC
 ```
